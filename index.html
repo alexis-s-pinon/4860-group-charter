@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shared Portfolio View – Class Project Charter</title>
+  <style>
+    :root{
+      --bg:#0b0d12; /* deep slate */
+      --panel:#121521;
+      --card:#161a28;
+      --ink:#e8ecf4;
+      --muted:#9aa4b2;
+      --brand:#6aa3ff; /* accent */
+      --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:linear-gradient(180deg,#0b0d12 0%, #0f1320 100%);
+      color:var(--ink); font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+    }
+    header{
+      position:sticky; top:0; z-index:3;
+      backdrop-filter: blur(6px);
+      background:rgba(11,13,18,.65); border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .wrap{max-width:1180px; margin:0 auto; padding:24px}
+    .title{display:flex; align-items:flex-start; gap:16px}
+    .title h1{margin:0; font-weight:800; font-size:28px; letter-spacing:.2px}
+    .title p{margin:4px 0 0; color:var(--muted)}
+
+    .grid{display:grid; grid-template-columns:420px 1fr; gap:24px; align-items:start}
+
+    .panel{background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); box-shadow:var(--shadow)}
+    .panel h2{margin:0 0 12px; font-size:18px}
+    .panel .content{padding:20px}
+
+    .fieldset{display:grid; gap:14px}
+    label{display:block; font-size:13px; color:var(--muted); margin-bottom:6px}
+    input[type="text"], textarea, select{
+      width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.08);
+      background:var(--card); color:var(--ink); outline:none;
+    }
+    textarea{min-height:84px; resize:vertical}
+
+    .radio-row{display:flex; gap:10px}
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.08); cursor:pointer; user-select:none;}
+    .dot{width:10px; height:10px; border-radius:50%}
+    .dot.ok{background:var(--ok)}.dot.warn{background:var(--warn)}.dot.bad{background:var(--bad)}
+    .pill input{display:none}
+    .pill.active{outline:2px solid rgba(106,163,255,.55)}
+
+    .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px}
+    button, .ghost{
+      appearance:none; border:0; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; color:#0b0d12;
+      background:linear-gradient(180deg,#88b7ff,#6aa3ff); box-shadow:var(--shadow)
+    }
+    button.secondary{background:#26314a; color:var(--ink)}
+    button.ghost{background:transparent; color:var(--ink); border:1px dashed rgba(255,255,255,.2)}
+
+    .portfolio{display:grid; gap:16px}
+    .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    .card-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px}
+    .hstack{display:flex; align-items:center; gap:8px}
+    .badge{font-size:12px; color:var(--muted)}
+    .health{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06)}
+    .card h3{margin:0 0 6px}
+    .meta{color:var(--muted); font-size:13px}
+    .card section{margin-top:12px}
+    .card h4{margin:0 0 6px; font-size:13px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em}
+
+    .toolbar{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+    .toolbar .spacer{flex:1}
+
+    .two{display:grid; gap:16px; grid-template-columns:1fr 1fr}
+
+    .checklist li{margin:8px 0}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; background:#0b0d12; padding:2px 6px; border-radius:6px; border:1px solid rgba(255,255,255,.12)}
+
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap title">
+      <div>
+        <h1>Shared Portfolio View</h1>
+        <p>Unified, executive-ready summary of the class project portfolio. Use the form to add standardized entries; the right panel renders the final portfolio in a consistent voice and layout.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap grid">
+
+    <!-- Input Form -->
+    <aside class="panel" aria-labelledby="formTitle">
+      <div class="content">
+        <h2 id="formTitle">Add / Edit Project Entry</h2>
+        <form id="projectForm" class="fieldset" autocomplete="off">
+          <div>
+            <label for="projName">Project Name <span class="badge">short & clear</span></label>
+            <input id="projName" name="projName" type="text" placeholder="e.g., Campus Event Management Platform" required />
+          </div>
+          <div>
+            <label for="owner">Project Owner / Team Lead <span class="badge">optional</span></label>
+            <input id="owner" name="owner" type="text" placeholder="e.g., Sarah Martinez" />
+          </div>
+
+          <div>
+            <label>Health Bubble</label>
+            <div class="radio-row" role="radiogroup" aria-label="Project health">
+              <label class="pill" data-health="on" tabindex="0"><span class="dot ok"></span> <span>On Track</span>
+                <input type="radio" name="health" value="on" required />
+              </label>
+              <label class="pill" data-health="risk" tabindex="0"><span class="dot warn"></span> <span>At Risk</span>
+                <input type="radio" name="health" value="risk" />
+              </label>
+              <label class="pill" data-health="off" tabindex="0"><span class="dot bad"></span> <span>Off Track</span>
+                <input type="radio" name="health" value="off" />
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label for="summary">Summary (2–3 sentences)</label>
+            <textarea id="summary" name="summary" placeholder="Provide a concise, high-level overview of progress and current focus." required></textarea>
+          </div>
+          <div>
+            <label for="risk">Challenge / Risk</label>
+            <textarea id="risk" name="risk" placeholder="Briefly describe blockers, dependencies, or issues."></textarea>
+          </div>
+          <div>
+            <label for="next">Next Step</label>
+            <textarea id="next" name="next" placeholder="Identify the immediate milestone, decision, or deliverable ahead." required></textarea>
+          </div>
+
+          <div class="actions">
+            <button type="submit" id="saveBtn">Add Project</button>
+            <button type="button" class="secondary" id="resetBtn">Clear Form</button>
+            <button type="button" class="ghost" id="sampleBtn" title="Insert a model entry">Insert Example</button>
+          </div>
+          <small id="summaryHint" class="meta"></small>
+        </form>
+      </div>
+    </aside>
+
+    <!-- Portfolio View -->
+    <section class="panel" aria-labelledby="portfolioTitle">
+      <div class="content">
+        <div class="toolbar">
+          <h2 id="portfolioTitle">Class Portfolio (Executive View)</h2>
+          <div class="spacer"></div>
+          <button id="copyHtml">Copy as HTML</button>
+          <button class="secondary" id="copyMd">Copy as Markdown</button>
+          <button class="ghost" id="printBtn">Print</button>
+        </div>
+        <p class="meta">Entries are normalized to a single voice and standardized structure. Sorts by health (Off Track → At Risk → On Track) then alphabetically.</p>
+        <div id="portfolio" class="portfolio" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Guidance panels -->
+    <section class="panel two" aria-label="Guidance and Checklist">
+      <div class="content">
+        <h2>Collaboration Best Practices</h2>
+        <ul class="checklist">
+          <li>Designate an editor to ensure consistent voice and formatting.</li>
+          <li>Use a shared document platform; set clear deadlines for submission and editing.</li>
+          <li>Rewrite and synthesize; do not paste raw status notes.</li>
+          <li>Standardize terminology and remove redundant points.</li>
+          <li>Keep tone professional; proofread for grammar and clarity.</li>
+        </ul>
+      </div>
+      <div class="content">
+        <h2>Step 2 Checklist</h2>
+        <ul class="checklist">
+          <li>Create a shared document accessible to all team members.</li>
+          <li>Collect raw info using the required template structure.</li>
+          <li>Editors harmonize entries into one consistent voice.</li>
+          <li>Apply uniform formatting and health bubbles across entries.</li>
+          <li>Proofread for executive-ready quality.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <template id="cardTemplate">
+    <article class="card" data-id="">
+      <div class="card-head">
+        <div>
+          <h3 class="projName"></h3>
+          <div class="meta owner"></div>
+        </div>
+        <div class="hstack">
+          <span class="health"><span class="dot" aria-hidden="true"></span><span class="label"></span></span>
+          <button class="secondary editBtn" title="Edit entry">Edit</button>
+          <button class="ghost delBtn" title="Remove entry">Remove</button>
+        </div>
+      </div>
+      <section>
+        <h4>Summary</h4>
+        <p class="summary"></p>
+      </section>
+      <section class="riskWrap">
+        <h4>Challenge / Risk</h4>
+        <p class="risk"></p>
+      </section>
+      <section>
+        <h4>Next Step</h4>
+        <p class="next"></p>
+      </section>
+    </article>
+  </template>
+
+  <script>
+    const form = document.getElementById('projectForm');
+    const portfolioEl = document.getElementById('portfolio');
+    const tpl = document.getElementById('cardTemplate');
+    const summaryHint = document.getElementById('summaryHint');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // Local state
+    let editingId = null;
+    let projects = JSON.parse(localStorage.getItem('portfolio.projects')||'[]');
+
+    // Helpers
+    const uid = () => Math.random().toString(36).slice(2,9);
+
+    function countSentences(text){
+      const cleaned = (text||'').replace(/\s+/g,' ').trim();
+      if(!cleaned) return 0;
+      // naive: split on period, exclamation, question marks
+      return cleaned.split(/[.!?]+\s/).filter(Boolean).length;
+    }
+    function normalize(text){
+      return (text||'').replace(/\s+/g,' ').trim();
+    }
+
+    function healthLabel(val){
+      return val==='off' ? 'Off Track' : val==='risk' ? 'At Risk' : 'On Track';
+    }
+    function healthColor(val){
+      return val==='off' ? 'bad' : val==='risk' ? 'warn' : 'ok';
+    }
+
+    function validate(){
+      const sum = document.getElementById('summary').value;
+      const n = countSentences(sum);
+      if(n<2 || n>3){
+        summaryHint.textContent = `Tip: Summaries should be 2–3 sentences (currently ${n || 0}).`;
+      } else {
+        summaryHint.textContent = '';
+      }
+    }
+
+    form.addEventListener('input', e=>{
+      if(e.target.id==='summary') validate();
+      if(e.target.closest('.pill')){
+        document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+        e.target.closest('.pill').classList.add('active');
+      }
+    });
+    document.querySelectorAll('.pill').forEach(p=>addEventListener('click',()=>{
+      document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+      p.classList.add('active');
+      p.querySelector('input').checked = true;
+    }));
+
+    function saveToStorage(){
+      localStorage.setItem('portfolio.projects', JSON.stringify(projects));
+    }
+
+    function render(){
+      portfolioEl.innerHTML = '';
+      // Sort: Off Track -> At Risk -> On Track, then A-Z
+      const rank = {off:0, risk:1, on:2};
+      const sorted = [...projects].sort((a,b)=>{
+        if(rank[a.health]!==rank[b.health]) return rank[a.health]-rank[b.health];
+        return a.name.localeCompare(b.name, undefined, {sensitivity:'base'});
+      });
+      for(const p of sorted){
+        const clone = tpl.content.cloneNode(true);
+        const root = clone.querySelector('article');
+        root.dataset.id = p.id;
+        root.querySelector('.projName').textContent = p.name;
+        root.querySelector('.owner').textContent = p.owner ? `Owner: ${p.owner}` : '';
+        root.querySelector('.summary').textContent = p.summary;
+        if(p.risk){
+          root.querySelector('.risk').textContent = p.risk;
+        } else {
+          root.querySelector('.riskWrap').style.display='none';
+        }
+        root.querySelector('.next').textContent = p.next;
+        const dot = root.querySelector('.dot');
+        dot.classList.add(healthColor(p.health));
+        root.querySelector('.label').textContent = healthLabel(p.health);
+        // hooks
+        root.querySelector('.editBtn').addEventListener('click', ()=>startEdit(p.id));
+        root.querySelector('.delBtn').addEventListener('click', ()=>removeProject(p.id));
+        portfolioEl.appendChild(clone);
+      }
+    }
+
+    function startEdit(id){
+      const p = projects.find(x=>x.id===id);
+      if(!p) return;
+      editingId = id;
+      form.projName.value = p.name;
+      form.owner.value = p.owner||'';
+      form.summary.value = p.summary;
+      form.risk.value = p.risk||'';
+      form.next.value = p.next;
+      document.querySelectorAll('.pill').forEach(x=>{
+        const checked = x.dataset.health===p.health;
+        x.classList.toggle('active', checked);
+        x.querySelector('input').checked = checked;
+      });
+      saveBtn.textContent = 'Update Project';
+      form.projName.focus();
+      validate();
+    }
+
+    function removeProject(id){
+      projects = projects.filter(p=>p.id!==id);
+      saveToStorage();
+      render();
+    }
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = new FormData(form);
+      const name = normalize(data.get('projName'));
+      const owner = normalize(data.get('owner'));
+      const summary = normalize(data.get('summary'));
+      const risk = normalize(data.get('risk'));
+      const next = normalize(data.get('next'));
+      const health = data.get('health');
+
+      if(!name || !summary || !next || !health){
+        alert('Please complete required fields (Project Name, Health, Summary, Next Step).');
+        return;
+      }
+      const sCount = countSentences(summary);
+      if(sCount<2 || sCount>3){
+        if(!confirm('Summaries should be 2–3 sentences. Continue anyway?')) return;
+      }
+
+      if(editingId){
+        projects = projects.map(p=> p.id===editingId ? {...p, name, owner, summary, risk, next, health} : p);
+      } else {
+        projects.push({id:uid(), name, owner, summary, risk, next, health});
+      }
+      editingId = null;
+      form.reset();
+      document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+      saveBtn.textContent = 'Add Project';
+      summaryHint.textContent = '';
+      saveToStorage();
+      render();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      editingId = null; form.reset(); summaryHint.textContent=''; saveBtn.textContent='Add Project';
+      document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+    });
+
+    document.getElementById('sampleBtn').addEventListener('click', ()=>{
+      form.projName.value = 'Campus Event Management Platform';
+      form.owner.value = 'Sarah Martinez';
+      form.summary.value = 'The team completed the database schema design and initiated frontend development for the event registration module. User authentication implementation is underway with completion targeted for next week. Initial stakeholder feedback on wireframes has been positive, validating the proposed user experience approach.';
+      form.risk.value = 'Third-party payment gateway integration is more complex than anticipated; awaiting updated API documentation may delay launch by 1–2 weeks.';
+      form.next.value = 'Complete user authentication module and conduct security testing. Finalize payment integration approach by end of week.';
+      document.querySelector('[data-health="on"]').click();
+      validate();
+    });
+
+    // Exporters
+    function portfolioAsHTML(){
+      const container = document.createElement('div');
+      container.innerHTML = portfolioEl.innerHTML; // shallow clone of rendered cards
+      return container.innerHTML.trim();
+    }
+    function portfolioAsMarkdown(){
+      const rows = [];
+      const rank = {off:'🔴 Off Track', risk:'🟡 At Risk', on:'🟢 On Track'};
+      const sorted = [...projects].sort((a,b)=>{
+        const r = {off:0,risk:1,on:2};
+        return r[a.health]-r[b.health] || a.name.localeCompare(b.name);
+      });
+      for(const p of sorted){
+        rows.push(
+`### ${p.name}
+*Health:* ${rank[p.health]}${p.owner?`  |  *Owner:* ${p.owner}`:''}
+
+**Summary**  
+${p.summary}
+${p.risk?`
+**Challenge / Risk**  
+${p.risk}`:''}
+
+**Next Step**  
+${p.next}
+`);
+      }
+      return rows.join('
+');
+    }
+
+    async function copy(text){
+      try{ await navigator.clipboard.writeText(text); alert('Copied to clipboard.'); }
+      catch(e){ console.error(e); alert('Could not copy automatically. Select and copy manually.'); }
+    }
+
+    document.getElementById('copyHtml').addEventListener('click', ()=>copy(portfolioAsHTML()));
+    document.getElementById('copyMd').addEventListener('click', ()=>copy(portfolioAsMarkdown()));
+    document.getElementById('printBtn').addEventListener('click', ()=>window.print());
+
+    // Initial hydrate
+    render();
+  </script>
+</body>
+</html>
