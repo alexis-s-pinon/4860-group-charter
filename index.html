@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shared Portfolio View – Executive Dashboard</title>
+  <title>Shared Portfolio View – Executive Dashboard (Preview)</title>
   <style>
   /* === PMO Executive Portfolio View === */
   :root{
@@ -15,8 +15,13 @@
     --shadow:0 6px 24px rgba(0,0,0,.25);
   }
   html, body{height:100%}
-  body{margin:0; background:radial-gradient(1200px 800px at 10% -10%, #0b0d12 0%, #0f1320 100%); color:var(--ink); font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";}
-  .shell{max-width:1100px; margin:6px auto; padding:24px}
+  body{
+    margin:0;
+    background:radial-gradient(1200px 800px at 10% -10%, #0b0d12 0%, #0f1320 100%);
+    color:var(--ink);
+    font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  }
+  .shell{max-width:1100px; margin:40px auto; padding:24px}
   header{position:sticky; top:0; z-index:3; background:rgba(15,19,32,.86); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid rgba(255,255,255,.06);}
   header .inner{max-width:1100px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:16px}
   header h1{margin:0; font-size:28px; letter-spacing:.2px}
@@ -24,62 +29,21 @@
   .pmo{margin:24px 0; padding:20px; border-radius:16px; background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.06); box-shadow:var(--shadow);}
   .pmo h2{margin:0 0 6px 0}
   .exec{display:grid; gap:10px; margin-bottom:16px}
-  .exec .badges{display:flex; gap:8px; flex-wrap:wrap}
-  .badge{display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; background:var(--card); border:1px solid rgba(255,255,255,.06); font-size:12px; color:var(--muted)}
-  .dot{width:10px; height:10px; border-radius:50%}
-  .dot.g{background:#28c76f}
-  .dot.y{background:#ffcc00}
-  .dot.r{background:#ff4d4f}
   .toolbar{display:flex; align-items:center; gap:10px; margin:10px 0}
   .toolbar .spacer{flex:1}
 
   /* Tiles */
   .tiles{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; margin:6px 0 18px}
-  .tile{display:flex; gap:12px; align-items:center; padding:12px 14px; border:1px solid rgba(255,255,255,.06);
-    background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.00)); border-radius:14px; text-decoration:none; color:var(--ink);
-    transition:transform .16s ease, border-color .16s ease, background .16s ease; box-shadow:var(--shadow)}
+  .tile{
+    display:flex; align-items:center; justify-content:center; padding:10px 12px;
+    border:1px solid rgba(255,255,255,.12);
+    background:var(--card); border-radius:12px; text-decoration:none; color:var(--ink);
+    font-weight:600; min-height:44px; box-shadow:var(--shadow);
+    transition:transform .16s ease, border-color .16s ease, background .16s ease;
+  }
   .tile:hover{transform:translateY(-2px); border-color:rgba(106,163,255,.55); background:linear-gradient(180deg,rgba(106,163,255,.10),rgba(255,255,255,.00))}
-  .avatar{width:36px; height:36px; border-radius:50%; display:grid; place-items:center; font-weight:800;
-    background:radial-gradient(60% 100% at 50% 0%, rgba(255,255,255,.18), rgba(255,255,255,.04)), var(--card);
-    border:1px solid rgba(255,255,255,.08); flex:0 0 36px}
-  .meta-wrap{min-width:0}
-  .name{font-weight:700; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-  .link{font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 
-  /* Standardized entries */
-  .list{display:grid; gap:12px}
-  .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:16px; box-shadow:var(--shadow)}
-  .card .row{display:grid; grid-template-columns:1fr 320px; gap:12px}
-  @media (max-width: 980px){ .card .row{grid-template-columns:1fr} }
-  .kv{display:grid; grid-template-columns:160px 1fr; gap:6px}
-  .kv b{color:var(--muted); font-weight:600}
-  .health{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.1); background:#0d1421}
-  .health .dot{width:8px; height:8px}
-  
-  /* --- Tile layout controls --- */
-  .btn{cursor:pointer; font-weight:600; padding:8px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:var(--card); color:var(--ink);}
-  .btn:hover{border-color:rgba(106,163,255,.55)}
-  .seg{display:inline-flex; gap:8px}
-  .tiles.tiles--row{display:flex; overflow-x:auto; gap:12px; padding-bottom:4px}
-  .tiles.tiles--row .tile{flex:0 0 300px; white-space:normal}
-  .tiles.tiles--even{display:grid; grid-template-columns:repeat(5, 1fr)}
-  @media (max-width: 1200px){ .tiles.tiles--even{grid-template-columns:repeat(3, 1fr)} }
-  @media (max-width: 800px){ .tiles.tiles--even{grid-template-columns:repeat(2, 1fr)} }
-  @media (max-width: 520px){ .tiles.tiles--even{grid-template-columns:repeat(1, 1fr)} }
-
-  
-  /* --- Compact single-line tiles --- */
-  .tiles{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px; margin:6px 0 18px}
-  @media (max-width: 900px){ .tiles{grid-template-columns:repeat(3, minmax(0,1fr))} }
-  @media (max-width: 620px){ .tiles{grid-template-columns:repeat(2, minmax(0,1fr))} }
-  .tile{display:flex; align-items:center; justify-content:center; padding:10px 12px; border:1px solid rgba(255,255,255,.12);
-    background:var(--card); border-radius:12px; text-decoration:none; color:var(--ink); font-weight:600; min-height:44px}
-  .tile:hover{transform:none; border-color:rgba(106,163,255,.55); background:linear-gradient(180deg,rgba(106,163,255,.10),rgba(255,255,255,.00))}
-  .name{font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:14px}
-  .link{display:none} /* hide URL line */
-  .avatar{display:none} /* remove initials bubble */
-
-  /* --- Collapsible updates --- */
+  /* Collapsible updates */
   details.update{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:16px; box-shadow:var(--shadow); overflow:hidden}
   details.update + details.update{margin-top:12px}
   details.update summary{list-style:none; cursor:pointer; padding:14px 16px; display:flex; align-items:center; gap:10px; user-select:none}
@@ -90,96 +54,12 @@
   .update-body{padding:0 16px 16px}
   .update-body .row{display:grid; grid-template-columns:1fr; gap:8px}
   .update-body p{margin:0}
-  .form{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:10px 0 16px}
-  @media (max-width: 800px){ .form{grid-template-columns:1fr} }
-  .field{display:grid; gap:6px}
-  .field label{display:block; font-size:12px; color:var(--muted)}
-  input[type="text"], input[type="date"], textarea, select{
-    width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
-    background:var(--card); color:var(--ink); outline:none;
-  }
-  textarea{min-height:72px; resize:vertical}
-  .actions{display:flex; gap:10px; justify-content:flex-end}
-  .btn{cursor:pointer; font-weight:600; padding:8px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:var(--card); color:var(--ink);}
-  .btn.primary{background:#0b3df2; border-color:#0b3df2}
-  .btn.primary:hover{filter:brightness(1.1)}
-
-  
-  /* === Spacing fixes for Team Status Updates form === */
-  .form{grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:8px 0 12px; align-items:start}
-  @media (max-width: 900px){ .form{grid-template-columns:1fr} }
-  .field{display:flex; flex-direction:column; gap:6px; margin:0}
-  .field label{margin:0 0 4px 0; font-size:12px; color:var(--muted)}
-  input[type="text"], input[type="date"], textarea, select{
-    padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
-    background:var(--card); color:var(--ink); outline:none; margin:0
-  }
-  select{height:44px}
-  textarea{min-height:64px}
-  .actions{margin-top:2px}
-
-  
-  /* === Update form layout & spacing === */
-  .form{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    grid-template-areas:
-      "date health"
-      "summary highlights"
-      "risks next"
-      "actions actions";
-    gap:12px;
-    margin:10px 0 16px;
-    align-items:start;
-  }
-  @media (max-width: 900px){
-    .form{grid-template-columns:1fr; grid-template-areas:
-      "date" "health" "summary" "highlights" "risks" "next" "actions";}
-  }
-  .field{display:flex; flex-direction:column; gap:6px; margin:0}
-  .field--date{grid-area:date}
-  .field--health{grid-area:health}
-  .field--summary{grid-area:summary}
-  .field--highlights{grid-area:highlights}
-  .field--risks{grid-area:risks}
-  .field--next{grid-area:next}
-  .field--actions{grid-area:actions; display:flex; justify-content:flex-end}
-  .field label{margin:0 0 4px 0; font-size:12px; color:var(--muted)}
-  input[type="text"], input[type="date"], textarea, select{
-    width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
-    background:var(--card); color:var(--ink); outline:none; margin:0
-  }
-  select{height:44px}
-  textarea#updSummary{min-height:96px}
-  textarea{min-height:64px; resize:vertical}
-
-  
-  /* === Input overflow fix === */
-  *, *::before, *::after { box-sizing: border-box; }
-  .form{gap:12px}
-  .form .field{min-width:0}
-  .form .field input,
-  .form .field select,
-  .form .field textarea{
-    width:100%;
-    max-width:100%;
-    display:block;
-    box-sizing:border-box;
-    overflow:auto;
-  }
-
-  
-  .btn.ghost{background:transparent; border-color:rgba(255,255,255,.18); color:var(--ink)}
-  .btn.ghost:hover{border-color:rgba(106,163,255,.55)}
-  .btn.small{padding:6px 10px; font-size:12px; border-radius:10px}
-  .controls{display:flex; gap:8px}
-
   </style>
 </head>
 <body>
   <header>
     <div class="inner">
-      <h1>Industry Professional Development</h1><br>
+      <h1>Industry Professional Development</h1>
       <span class="pill">Unified, executive-ready summary of the class project portfolio.</span>
     </div>
   </header>
@@ -191,20 +71,17 @@
           <h2>Portfolio View</h2>
           <div class="spacer"></div>
         </div>
-        <p>The program currently spans 5 projects, with 4 on track, 1 at risk, and 0 off track. Common themes include charter finalization, scope alignment, and early milestone planning.</p>
-        <div class="badges">
-          <div class="badge"><span class="dot g"></span> <span id="ctGreen">4</span> On Track</div>
-          <div class="badge"><span class="dot y"></span> <span id="ctYellow">1</span> At Risk</div>
-          <div class="badge"><span class="dot r"></span> <span id="ctRed">0</span> Off Track</div>
-          <div class="badge">Total: <b id="ctTotal">5</b> projects</div>
-        </div>
+        <!-- Executive summary paragraph (editable) -->
+        <p id="execSummary" contenteditable="true">
+          The program currently spans 5 projects, with 4 on track, 1 at risk, and 0 off track. Common themes include charter finalization, scope alignment, and early milestone planning. Overall health is stable with focused attention on upcoming deliverables.
+        </p>
       </div>
 
       <div class="toolbar">
         <h3>Project Charters</h3>
         <div class="spacer"></div>
-        <div class="spacer"></div>
       </div>
+
       <div class="tiles" aria-label="Project charter tiles">
         <a class="tile" href="https://adiaz341.github.io/Project-Charter/" target="_blank" rel="noopener noreferrer">Alejandro Diaz</a>
         <a class="tile" href="https://ryanhwang2.github.io/Week-7-Homework-2-Charter-Iteration/" target="_blank" rel="noopener noreferrer">Ryan Hwang</a>
@@ -214,60 +91,37 @@
       </div>
 
       <div class="toolbar">
-        <h3>Team Status Updates</h3>
+        <h3>Recent Update</h3>
         <div class="spacer"></div>
       </div>
-      
-      <!--div class="form" id="updateForm">
-        <div class="field field--date"><label>Date</label><input type="date" id="updDate"></div>
-        <div class="field field--health"><label>Health</label>
-          <select id="updHealth">
-            <option value="green">On Track</option>
-            <option value="yellow">At Risk</option>
-            <option value="red">Off Track</option>
-          </select>
-        </div>
-        <div class="field field--summary"><label>Summary (2–3 sentences)</label><textarea id="updSummary" placeholder="Concise update in a consistent, professional tone"></textarea></div>
-        <div class="field field--highlights"><label>Highlights (comma-separated)</label><textarea id="updHighlights" placeholder="Key wins, progress"></textarea></div>
-        <div class="field field--risks"><label>Challenges / Risks (comma-separated)</label><textarea id="updRisks" placeholder="Issues, dependencies"></textarea></div>
-        <div class="field field--next"><label>Next Week Focus (comma-separated)</label><textarea id="updNext" placeholder="Immediate priorities"></textarea></div>
-        <div class="actions field--actions"><button class="btn primary" id="addUpdateBtn">Add Update</button></div>
-      </div>
-      <div class="toolbar"><h3>Recent Updates</h3><div class="spacer"></div><div class="controls"><button class="btn ghost small" id="expandAllBtn">Expand All</button><button class="btn ghost small" id="collapseAllBtn">Collapse All</button></div></div>
-      <div class="list" id="updatesList" aria-label="Recent team updates"-->
 
-        <!-- BEGIN: Static sample update. Duplicate this block to add more updates. -->
-        <details class="update" open>
-          <summary>
-            <div class="summary-row">
-              <strong>Update – 2025-10-26</strong>
-              <span class="spacer"></span>
-              <div class="summary-meta">
-                <span>PMO</span>
-                <span class="health"><span class="dot g"></span>Green</span>
-              </div>
-            </div>
-          </summary>
-          <div class="update-body">
-            <div class="row">
-              <div>
-                <p><strong>Summary:</strong>The team has completed the suggested restructure of our goal. Milestone are currently in progress, and are expected to be completed shortly. Monitoring and preplanning future milestones has begun to keep project timeline on track.</p>
-                <p><strong>Highlights:</strong>Finalized goal and milestones.</p>
-              </div>
-              <div>
-                <p><strong>Challenges / Risks:</strong>Outside impact affecting progress and timeline. Factors such as feedback and commitments outside of the project may cause delays in completion.</p>
-                <p><strong>Next Week Focus:</strong>Working on and completing next deliverable.</p>
-              </div>
+      <!-- Static sample update -->
+      <details class="update" open>
+        <summary>
+          <div class="summary-row">
+            <strong>Update – 2025-10-26</strong>
+            <span class="spacer"></span>
+            <div class="summary-meta">
+              <span>PMO</span>
+              <span>Green</span>
             </div>
           </div>
-        </details>
-        <!-- END: Static sample update -->
-        
-</div>
+        </summary>
+        <div class="update-body">
+          <div class="row">
+            <div>
+              <p><strong>Summary:</strong> Majority of the projects are greenlit except for one, which is waiting for approval to advance from the "at risk" category. The most common challenges presented were our broad deliverables that weren't directly tied to our main goals; however, we have made the necessary changes as suggested. We share common ground in our goals, which primarily consist of getting more experience to advance our personal careers for the future through hands-on projects, certifications, and networking. The overall health of our program is on track, with some members having completed deliverables to submit. We will continue updating this page as needed.   </p>
+              <p><strong>Highlights:</strong> Finalized goal and milestones.</p>
+            </div>
+            <div>
+              <p><strong>Challenges / Risks:</strong> External factors affecting timeline; feedback cycles and outside commitments may cause delays.</p>
+              <p><strong>Next Week Focus:</strong> Progress the next deliverable to completion.</p>
+            </div>
+          </div>
+        </div>
+      </details>
 
     </section>
   </div>
-
-  
 </body>
 </html>
