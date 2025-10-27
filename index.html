@@ -179,7 +179,7 @@
 <body>
   <header>
     <div class="inner">
-      <h1>Team Status Updates</h1>
+      <h1>Industry Professional Development</h1><br>
       <span class="pill">Unified, executive-ready summary of the class project portfolio. Use the form to add standardized entries; the right panel renders the final portfolio in a consistent voice and layout.</span>
     </div>
   </header>
@@ -191,8 +191,8 @@
           <h2>Portfolio View</h2>
           <div class="spacer"></div>
         </div>
-        <p id="execSummary" contenteditable="true"></p>
-        <!--p>The program currently spans 5 projects, with 4 on track, 1 at risk, and 0 off track. Common themes include charter finalization, scope alignment, and early milestone planning.</p-->
+        <!--p id="execSummary" contenteditable="true">Write your executive summary here. You can edit this text directly in the HTML file.</p-->
+        <p>The program currently spans 5 projects, with 4 on track, 1 at risk, and 0 off track. Common themes include charter finalization, scope alignment, and early milestone planning.</p>
         <div class="badges">
           <div class="badge"><span class="dot g"></span> <span id="ctGreen">4</span> On Track</div>
           <div class="badge"><span class="dot y"></span> <span id="ctYellow">1</span> At Risk</div>
@@ -219,7 +219,7 @@
         <div class="spacer"></div>
       </div>
       
-      <div class="form" id="updateForm">
+      <!--div class="form" id="updateForm">
         <div class="field field--date"><label>Date</label><input type="date" id="updDate"></div>
         <div class="field field--health"><label>Health</label>
           <select id="updHealth">
@@ -235,253 +235,40 @@
         <div class="actions field--actions"><button class="btn primary" id="addUpdateBtn">Add Update</button></div>
       </div>
       <div class="toolbar"><h3>Recent Updates</h3><div class="spacer"></div><div class="controls"><button class="btn ghost small" id="expandAllBtn">Expand All</button><button class="btn ghost small" id="collapseAllBtn">Collapse All</button></div></div>
-      <div class="list" id="updatesList" aria-label="Recent team updates"></div>
+      <div class="list" id="updatesList" aria-label="Recent team updates"-->
+
+        <!-- BEGIN: Static sample update. Duplicate this block to add more updates. -->
+        <details class="update" open>
+          <summary>
+            <div class="summary-row">
+              <strong>Update – 2025-10-26</strong>
+              <span class="spacer"></span>
+              <div class="summary-meta">
+                <span>PMO</span>
+                <span class="health"><span class="dot g"></span>Green</span>
+              </div>
+            </div>
+          </summary>
+          <div class="update-body">
+            <div class="row">
+              <div>
+                <p><strong>Summary:</strong>The team has completed the suggested restructure of our goal. Milestone are currently in progress, and are expected to be completed shortly. Monitoring and preplanning future milestones has begun to keep project timeline on track.</p>
+                <p><strong>Highlights:</strong>Finalized goal and milestones.</p>
+              </div>
+              <div>
+                <p><strong>Challenges / Risks:</strong>Outside impact affecting progress and timeline. Factors such as feedback and commitments outside of the project may cause delays in completion.</p>
+                <p><strong>Next Week Focus:</strong>Working on and completing next deliverable.</p>
+              </div>
+            </div>
+          </div>
+        </details>
+        <!-- END: Static sample update -->
+        
+</div>
 
     </section>
   </div>
 
-  <script>
-  // --- Data (edit to update the dashboard) ---
   
-
-
-  // Team weekly status updates (edit to add new entries)
-  let TEAM_UPDATES = [{
-      date: "2025-10-26",
-      owner: "PMO",
-      health: "green",
-      highlights: [
-        "All charters published in shared view; baseline scope and success metrics drafted.",
-        "Initial milestone plan agreed by most teams."
-      ],
-      risks: [
-        "Two projects awaiting stakeholder sign-off may slip if feedback delays continue."
-      ],
-      next: [
-        "Lock baselines, confirm resourcing, and launch sprint-0 ceremonies."
-      ]
-    }
-  ];
-
-
-  // --- Helpers ---
-  const $ = (s, r=document) => r.querySelector(s);
-  function el(tag, cls, txt){ const n=document.createElement(tag); if(cls) n.className=cls; if(txt!==undefined) n.textContent=txt; return n; }
-  function cap(s){ return s.replace(/\b\w/g,m=>m.toUpperCase()); }
-  function initials(name){ const parts=name.split(/[\s–-]+/).filter(Boolean); const a=(parts[0]||'X')[0]; const b=(parts[1]?.[0]||(parts[0]?.[1]||'')).toUpperCase(); return (a+b).toUpperCase(); }
-
-  // --- Tiles ---
-  function renderTiles(){
-    const root=document.getElementById('tiles'); if(!root) return; root.innerHTML='';
-    PMO_LINKS.forEach((url,i)=>{
-      const label = PMO_NAMES[i] || url;
-      const a=el('a','tile'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; a.title=label;
-      a.appendChild(el('div','name',label));
-      root.appendChild(a);
-    });
-  }
-
-  // --- Standardized Entry Cards ---
-  function healthChip(h){
-    const chip=el('span','health');
-    const dot=el('span','dot ' + (h==='green'?'g':h==='yellow'?'y':'r'));
-    chip.appendChild(dot);
-    chip.appendChild(el('span','', h==='green'?'On Track':(h==='yellow'?'At Risk':'Off Track')));
-    return chip;
-  }
-
-  function renderUpdates(){
-    const list=document.getElementById('updatesList'); if(!list) return; list.innerHTML='';
-    const items=[...TEAM_UPDATES].sort((a,b)=> (b.date||'').localeCompare(a.date||''));
-    items.forEach((u,idx)=>{
-      const det=document.createElement('details'); det.className='update'; if(idx===0) det.setAttribute('open','open');
-      // keep pointer to original array index for stable edit/delete
-      const origIndex = TEAM_UPDATES.indexOf(u);
-      det.dataset.idx = String(origIndex);
-
-      const sum=document.createElement('summary');
-      const row=el('div','summary-row');
-      row.appendChild(el('strong','', `Update – ${u.date}`));
-      row.appendChild(el('span','spacer'));
-      const meta=el('div','summary-meta'); meta.appendChild(el('span','', u.owner||'')); meta.appendChild(healthChip(u.health||'green'));
-      row.appendChild(meta);
-      sum.appendChild(row); det.appendChild(sum);
-
-      const body=el('div','update-body');
-      body.appendChild(el('p','', 'Summary: ' + (u.summary || '-')));
-      body.appendChild(el('p','', 'Highlights: ' + (u.highlights?.join(' • ')||'-')));
-      body.appendChild(el('p','', 'Challenges / Risks: ' + (u.risks?.join(' • ')||'-')));
-      body.appendChild(el('p','', 'Next Week Focus: ' + (u.next?.join(' • ')||'-')));
-
-      const actions=el('div','actions');
-      const editBtn=el('button','btn small','Edit'); editBtn.type='button'; editBtn.addEventListener('click', (e)=>{ e.preventDefault(); startEdit(origIndex); });
-      const delBtn=el('button','btn ghost small','Delete'); delBtn.type='button'; delBtn.addEventListener('click', (e)=>{ e.preventDefault(); deleteUpdate(origIndex); });
-      actions.appendChild(editBtn); actions.appendChild(delBtn);
-      body.appendChild(actions);
-
-      det.appendChild(body);
-      list.appendChild(det);
-    });
-  }
-
-
-  // --- Executive Summary ---
-  
-function renderSummary(){
-  const SUM_KEY = "pmo_exec_summary_v1";
-  const G_KEY = "pmo_exec_green_v1";
-  const Y_KEY = "pmo_exec_yellow_v1";
-  const R_KEY = "pmo_exec_red_v1";
-
-  const $ = (s,r=document)=>r.querySelector(s);
-  const sEl = $("#execSummary");
-  const gEl = $("#ctGreen");
-  const yEl = $("#ctYellow");
-  const rEl = $("#ctRed");
-  const tEl = $("#ctTotal");
-
-  // Load
-  const sVal = localStorage.getItem(SUM_KEY);
-  const gVal = localStorage.getItem(G_KEY);
-  const yVal = localStorage.getItem(Y_KEY);
-  const rVal = localStorage.getItem(R_KEY);
-  if(sVal!==null) sEl.textContent = sVal;
-  if(gVal!==null) gEl.textContent = gVal;
-  if(yVal!==null) yEl.textContent = yVal;
-  if(rVal!==null) rEl.textContent = rVal;
-
-  const toInt = (el)=>{
-    const n = parseInt((el.textContent||'0').replace(/[^\\d\\-]/g,''),10);
-    return isFinite(n) ? Math.max(0,n) : 0;
-  }
-  const updateTotal = ()=>{
-    const total = toInt(gEl) + toInt(yEl) + toInt(rEl);
-    tEl.textContent = String(total);
-  };
-  updateTotal();
-
-  // Save on input/blur, update total live
-  const saveCounts = ()=>{
-    localStorage.setItem(G_KEY, toInt(gEl));
-    localStorage.setItem(Y_KEY, toInt(yEl));
-    localStorage.setItem(R_KEY, toInt(rEl));
-    updateTotal();
-  };
-  ["input","blur","keyup"].forEach(ev=>{
-    gEl.addEventListener(ev, saveCounts);
-    yEl.addEventListener(ev, saveCounts);
-    rEl.addEventListener(ev, saveCounts);
-  });
-
-  const saveSummary = ()=>{
-    localStorage.setItem(SUM_KEY, sEl.textContent||"");
-  };
-  ["input","blur"].forEach(ev=> sEl.addEventListener(ev, saveSummary));
-
-  // If empty first run, drop a friendly placeholder
-  if(!sEl.textContent.trim()){
-    sEl.textContent = "Write your executive summary here. Keep it 3–5 sentences, in a single consistent PMO voice.";
-    saveSummary();
-  }
-}
-
-
-  function setTilesLayout(mode){
-    const root=document.getElementById('tiles'); if(!root) return;
-    root.classList.remove('tiles--row','tiles--even');
-    if(mode==='row'){ root.classList.add('tiles--row'); }
-    if(mode==='even'){ root.classList.add('tiles--even'); }
-  }
-
-  function wireLayoutButtons(){
-    const rowBtn=document.getElementById('tilesRowBtn');
-    const evenBtn=document.getElementById('tilesEvenBtn');
-    if(rowBtn) rowBtn.addEventListener('click', ()=> setTilesLayout('row'));
-    if(evenBtn) evenBtn.addEventListener('click', ()=> setTilesLayout('even'));
-  }
-
-  function renderPMO(){
-    renderSummary();
-    renderTiles();
-    renderUpdates();
-    wireLayoutButtons();
-    // default to evenly split grid on load
-    setTilesLayout('even');
-  }
-  
-  // ----- Persistence for updates -----
-  const STORAGE_KEY = "pmo_team_updates_v1";
-  function loadUpdates(){
-    try{
-      const raw=localStorage.getItem(STORAGE_KEY);
-      if(!raw) return;
-      const arr=JSON.parse(raw);
-      if(Array.isArray(arr)) TEAM_UPDATES = arr;
-    }catch(e){}
-  }
-  function saveUpdates(){
-    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(TEAM_UPDATES)); }catch(e){}
-  }
-  function addUpdateFromForm(){
-    const d=document.getElementById('updDate').value || new Date().toISOString().slice(0,10);
-    const h=document.getElementById('updHealth').value || 'green';
-    const s=(document.getElementById('updSummary').value||'').trim();
-    const hl=(document.getElementById('updHighlights').value||'').split(',').map(s=>s.trim()).filter(Boolean);
-    const rk=(document.getElementById('updRisks').value||'').split(',').map(s=>s.trim()).filter(Boolean);
-    const nx=(document.getElementById('updNext').value||'').split(',').map(s=>s.trim()).filter(Boolean);
-    const payload = {date:d, owner:'PMO', summary:s, health:h, highlights:hl, risks:rk, next:nx};
-
-    if(EDIT_INDEX!==null){
-      TEAM_UPDATES[EDIT_INDEX] = payload;
-    } else {
-      TEAM_UPDATES.push(payload);
-    }
-    saveUpdates();
-    renderUpdates();
-    // reset editing state & clear inputs (keep date/health)
-    EDIT_INDEX = null;
-    const btn = document.getElementById('addUpdateBtn'); if(btn){ btn.textContent='Add Update'; }
-    ['updSummary','updHighlights','updRisks','updNext'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  }
-
-  
-  // ----- Expand/Collapse All -----
-  function expandAllUpdates(){ document.querySelectorAll('details.update').forEach(d=>d.setAttribute('open','open')); }
-  function collapseAllUpdates(){ document.querySelectorAll('details.update').forEach(d=>d.removeAttribute('open')); }
-
-  // ----- Edit/Delete -----
-  let EDIT_INDEX = null;
-  function startEdit(idx){
-    const u = TEAM_UPDATES[idx]; if(!u) return;
-    document.getElementById('updDate').value = u.date || '';
-    document.getElementById('updHealth').value = u.health || 'green';
-    document.getElementById('updSummary').value = u.summary || '';
-    document.getElementById('updHighlights').value = (u.highlights||[]).join(', ');
-    document.getElementById('updRisks').value = (u.risks||[]).join(', ');
-    document.getElementById('updNext').value = (u.next||[]).join(', ');
-    const btn = document.getElementById('addUpdateBtn');
-    if(btn){ btn.textContent = 'Save Update'; }
-    EDIT_INDEX = idx;
-    // scroll into view
-    document.getElementById('updateForm').scrollIntoView({behavior:'smooth', block:'start'});
-  }
-
-  function deleteUpdate(idx){
-    if(idx==null || idx<0 || idx>=TEAM_UPDATES.length) return;
-    TEAM_UPDATES.splice(idx,1);
-    saveUpdates();
-    renderUpdates();
-  }
-
-  document.addEventListener('DOMContentLoaded', ()=>{
-    loadUpdates();
-    renderPMO();
-    const addBtn=document.getElementById('addUpdateBtn');
-    if(addBtn){ addBtn.addEventListener('click', (e)=>{ e.preventDefault(); addUpdateFromForm(); }); }
-    const ex=document.getElementById('expandAllBtn'); if(ex){ ex.addEventListener('click', (e)=>{ e.preventDefault(); expandAllUpdates(); }); }
-    const cl=document.getElementById('collapseAllBtn'); if(cl){ cl.addEventListener('click', (e)=>{ e.preventDefault(); collapseAllUpdates(); }); }
-  });
-
-  </script>
 </body>
 </html>
