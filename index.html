@@ -5,6 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shared Portfolio View – Executive Dashboard</title>
   <style>
+
+  /* Force Project Charters to occupy a full row so the Updates section starts below */
+  .project-charters-section, .project-charters-section .toolbar, .project-charters-section .tiles { grid-column: 1 / -1; width:100%; }
+  .flow-break{ grid-column:1 / -1; width:100%; height:0; }
+
+
+
+/* === Static Charter Tiles (scoped) === */
+.tiles{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:12px; margin:6px 0 18px}
+@media (max-width: 1000px){ .tiles{grid-template-columns:repeat(3, minmax(0,1fr))} }
+@media (max-width: 650px){ .tiles{grid-template-columns:repeat(2, minmax(0,1fr))} }
+.tile{display:flex; align-items:center; justify-content:center; min-height:44px; padding:12px 14px;
+  border:1px solid rgba(255,255,255,.12); background:var(--card, #121a29); border-radius:14px;
+  text-decoration:none; color:var(--ink, #e8ecf1); font-weight:700; box-shadow:var(--shadow, 0 6px 24px rgba(0,0,0,.25))}
+.tile:hover{border-color:rgba(106,163,255,.55); background:linear-gradient(180deg,rgba(106,163,255,.10),rgba(255,255,255,.00))}
+[contenteditable="true"]{outline:1px dashed transparent; transition:outline-color .15s ease, background .15s ease}
+[contenteditable="true"]:focus{outline-color: rgba(106,163,255,.55); background: rgba(106,163,255,.08)}
+
+
   /* === PMO Executive Portfolio View === */
   :root{
     --ink:#e8ecf1;
@@ -187,27 +206,36 @@
   <div class="shell">
     <section class="pmo" id="portfolio-view" aria-label="Executive Portfolio View">
       <div class="exec">
-        <div class="toolbar">
+        <section class="project-charters-section">
+<div class="toolbar">
           <h2>Portfolio View</h2>
           <div class="spacer"></div>
         </div>
-        <p id="execSummary"></p>
+        <p>The program currently spans 5 projects, with 4 on track, 1 at risk, and 0 off track. Common themes include charter finalization, scope alignment, and early milestone planning.</p>
         <div class="badges">
-          <div class="badge"><span class="dot g"></span> <span id="ctGreen">0</span> On Track</div>
-          <div class="badge"><span class="dot y"></span> <span id="ctYellow">0</span> At Risk</div>
+          <div class="badge"><span class="dot g"></span> <span id="ctGreen">4</span> On Track</div>
+          <div class="badge"><span class="dot y"></span> <span id="ctYellow">1</span> At Risk</div>
           <div class="badge"><span class="dot r"></span> <span id="ctRed">0</span> Off Track</div>
-          <div class="badge">Total: <b id="ctTotal">0</b> projects</div>
+          <div class="badge">Total: <b id="ctTotal">5</b> projects</div>
         </div>
-      </div>
-
+      </div></section>
+<section class="pmo">
       <div class="toolbar">
         <h3>Project Charters</h3>
         <div class="spacer"></div>
-        <div class="spacer"></div>
-      </div>
-      <div id="tiles" class="tiles" aria-label="Links to individual project charters"></div>
 
-      <div class="toolbar">
+      <div class="tiles" aria-label="Project charter tiles">
+        <a class="tile" href="https://adiaz341.github.io/Project-Charter/" target="_blank" rel="noopener noreferrer">Alejandro Diaz</a>
+        <a class="tile" href="https://ryanhwang2.github.io/Week-7-Homework-2-Charter-Iteration/" target="_blank" rel="noopener noreferrer">Ryan Hwang</a>
+        <a class="tile" href="https://winterguy123.github.io/jyan.github.io/" target="_blank" rel="noopener noreferrer">Jeremy Yan</a>
+        <a class="tile" href="https://juanstudentaccount.github.io/Updated-Project-Charter/" target="_blank" rel="noopener noreferrer">Juan Talome</a>
+        <a class="tile" href="https://alexis-s-pinon.github.io/4860-project-charter/" target="_blank" rel="noopener noreferrer">Alexis Pinon</a>
+      </div>
+
+</section>
+<section class="pmo">
+<div class="flow-break"></div>
+<div class="toolbar">
         <h3>Team Status Updates</h3>
         <div class="spacer"></div>
       </div>
@@ -252,26 +280,11 @@
       summary: "Updated version clarifies scope and success criteria. Schedule and deliverables drafted.",
       risk: "None significant; monitoring integration dependencies.",
       next: "Kick off sprint-0 tasks and confirm integration points." },
-    { name: "4860 Project Charter – alexis-s-pinon", owner: "A. Pinon", health: "yellow",
+    { name: "4860 Project Charter – alexis-s-pinon", owner: "A. Pinon", health: "green",
       summary: "Draft finalized with initial stakeholder review. Budget assumptions to be validated.",
       risk: "Budget and vendor timeline risks if assumptions change.",
       next: "Validate budget, align vendor timeline, and set go/no-go gate." }
   ];
-
-  const PMO_LINKS = [
-  "https://adiaz341.github.io/Project-Charter/",
-  "https://ryanhwang2.github.io/Week-7-Homework-2-Charter-Iteration/",
-  "https://winterguy123.github.io/jyan.github.io/",
-  "https://juanstudentaccount.github.io/Updated-Project-Charter/",
-  "https://alexis-s-pinon.github.io/4860-project-charter/"
-];
-  const PMO_NAMES = [
-  "Alajandro Diaz",
-  "Ryan Hwang",
-  "Jeremy Yan",
-  "Juan Talome",
-  "Alexis Pinon"
-];
 
   // Team weekly status updates (edit to add new entries)
   let TEAM_UPDATES = [{
@@ -299,14 +312,7 @@
   function initials(name){ const parts=name.split(/[\s–-]+/).filter(Boolean); const a=(parts[0]||'X')[0]; const b=(parts[1]?.[0]||(parts[0]?.[1]||'')).toUpperCase(); return (a+b).toUpperCase(); }
 
   // --- Tiles ---
-  function renderTiles(){
-    const root=document.getElementById('tiles'); if(!root) return; root.innerHTML='';
-    PMO_LINKS.forEach((url,i)=>{
-      const label = PMO_NAMES[i] || url;
-      const a=el('a','tile'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; a.title=label;
-      a.appendChild(el('div','name',label));
-      root.appendChild(a);
-    });
+  );
   }
 
   // --- Standardized Entry Cards ---
@@ -354,17 +360,7 @@
 
 
   // --- Executive Summary ---
-  function renderSummary(){
-    const total=PMO_PROJECTS.length;
-    const greens=PMO_PROJECTS.filter(p=>p.health==='green').length;
-    const yellows=PMO_PROJECTS.filter(p=>p.health==='yellow').length;
-    const reds=PMO_PROJECTS.filter(p=>p.health==='red').length;
-    $("#ctTotal").textContent=total;
-    $("#ctGreen").textContent=greens;
-    $("#ctYellow").textContent=yellows;
-    $("#ctRed").textContent=reds;
-    const exec = [
-      `The program currently spans ${total} projects, with ${greens} on track, ${yellows} at risk, and ${reds} off track.`,
+  function renderSummary(){ /* disabled: manual portfolio view */ } projects, with ${greens} on track, ${yellows} at risk, and ${reds} off track.`,
       `Common themes include charter finalization, scope alignment, and early milestone planning.`,
       (yellows>0 || reds>0) ? `Primary risks center on schedule clarity and stakeholder alignment; mitigation actions are in progress.` : `No material risks are trending across the portfolio at this time.`,
       `Near-term focus is on locking baseline plans, confirming success metrics, and initiating sprint-0 deliverables.`
@@ -388,7 +384,6 @@
 
   function renderPMO(){
     renderSummary();
-    renderTiles();
     renderUpdates();
     wireLayoutButtons();
     // default to evenly split grid on load
