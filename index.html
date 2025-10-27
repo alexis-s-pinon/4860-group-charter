@@ -179,7 +179,7 @@
 <body>
   <header>
     <div class="inner">
-      <h1>Shared Portfolio View</h1>
+      <h1>Team Status Updates</h1>
       <span class="pill">Unified, executive-ready summary of the class project portfolio. Use the form to add standardized entries; the right panel renders the final portfolio in a consistent voice and layout.</span>
     </div>
   </header>
@@ -191,7 +191,8 @@
           <h2>Portfolio View</h2>
           <div class="spacer"></div>
         </div>
-        <p>The program currently spans 5 projects, with 4 on track, 1 at risk, and 0 off track. Common themes include charter finalization, scope alignment, and early milestone planning.</p>
+        <p id="execSummary" contenteditable="true"></p>
+        <!--p>The program currently spans 5 projects, with 4 on track, 1 at risk, and 0 off track. Common themes include charter finalization, scope alignment, and early milestone planning.</p-->
         <div class="badges">
           <div class="badge"><span class="dot g"></span> <span id="ctGreen">4</span> On Track</div>
           <div class="badge"><span class="dot y"></span> <span id="ctYellow">1</span> At Risk</div>
@@ -241,43 +242,8 @@
 
   <script>
   // --- Data (edit to update the dashboard) ---
-  const PMO_PROJECTS = [
-    { name: "Project Charter – adiaz341", owner: "A. Diaz", health: "green",
-      summary: "Scope defined and initial charter published. Team is aligning on milestones and responsibilities.",
-      risk: "None material at this stage; awaiting feedback alignment.",
-      next: "Confirm success metrics and finalize schedule." },
-    { name: "Charter Iteration – ryanhwang2", owner: "R. Hwang", health: "green",
-      summary: "Iteration incorporates early feedback and clarifies deliverables. Dependencies captured.",
-      risk: "Minor: timeline sensitivity around resource availability.",
-      next: "Lock resourcing and publish baseline plan." },
-    { name: "jyan Charter – winterguy123", owner: "J. Yan", health: "yellow",
-      summary: "Key requirements identified; validation in progress. Several open questions remain with stakeholders.",
-      risk: "Open requirements may affect scope and schedule if not resolved promptly.",
-      next: "Complete stakeholder review and resolve open questions." },
-    { name: "Updated Charter – juanstudentaccount", owner: "Juan S.", health: "green",
-      summary: "Updated version clarifies scope and success criteria. Schedule and deliverables drafted.",
-      risk: "None significant; monitoring integration dependencies.",
-      next: "Kick off sprint-0 tasks and confirm integration points." },
-    { name: "4860 Project Charter – alexis-s-pinon", owner: "A. Pinon", health: "yellow",
-      summary: "Draft finalized with initial stakeholder review. Budget assumptions to be validated.",
-      risk: "Budget and vendor timeline risks if assumptions change.",
-      next: "Validate budget, align vendor timeline, and set go/no-go gate." }
-  ];
+  
 
-  const PMO_LINKS = [
-  "https://adiaz341.github.io/Project-Charter/",
-  "https://ryanhwang2.github.io/Week-7-Homework-2-Charter-Iteration/",
-  "https://winterguy123.github.io/jyan.github.io/",
-  "https://juanstudentaccount.github.io/Updated-Project-Charter/",
-  "https://alexis-s-pinon.github.io/4860-project-charter/"
-];
-  const PMO_NAMES = [
-  "Adrian Diaz",
-  "Ryan Hwang",
-  "J. Yan",
-  "Juan S.",
-  "Alexis S. Pinon"
-];
 
   // Team weekly status updates (edit to add new entries)
   let TEAM_UPDATES = [{
