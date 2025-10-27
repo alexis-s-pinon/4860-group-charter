@@ -5,25 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shared Portfolio View – Executive Dashboard</title>
   <style>
-
-  /* Force Project Charters to occupy a full row so the Updates section starts below */
-  .project-charters-section, .project-charters-section .toolbar, .project-charters-section .tiles { grid-column: 1 / -1; width:100%; }
-  .flow-break{ grid-column:1 / -1; width:100%; height:0; }
-
-
-
-/* === Static Charter Tiles (scoped) === */
-.tiles{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:12px; margin:6px 0 18px}
-@media (max-width: 1000px){ .tiles{grid-template-columns:repeat(3, minmax(0,1fr))} }
-@media (max-width: 650px){ .tiles{grid-template-columns:repeat(2, minmax(0,1fr))} }
-.tile{display:flex; align-items:center; justify-content:center; min-height:44px; padding:12px 14px;
-  border:1px solid rgba(255,255,255,.12); background:var(--card, #121a29); border-radius:14px;
-  text-decoration:none; color:var(--ink, #e8ecf1); font-weight:700; box-shadow:var(--shadow, 0 6px 24px rgba(0,0,0,.25))}
-.tile:hover{border-color:rgba(106,163,255,.55); background:linear-gradient(180deg,rgba(106,163,255,.10),rgba(255,255,255,.00))}
-[contenteditable="true"]{outline:1px dashed transparent; transition:outline-color .15s ease, background .15s ease}
-[contenteditable="true"]:focus{outline-color: rgba(106,163,255,.55); background: rgba(106,163,255,.08)}
-
-
   /* === PMO Executive Portfolio View === */
   :root{
     --ink:#e8ecf1;
@@ -198,16 +179,15 @@
 <body>
   <header>
     <div class="inner">
-      <h1>Team Jackal Program Status</h1>
-      <span class="pill">Unified, executive-ready summary of the team's project portfolios.</span>
+      <h1>Shared Portfolio View</h1>
+      <span class="pill">Unified, executive-ready summary of the class project portfolio. Use the form to add standardized entries; the right panel renders the final portfolio in a consistent voice and layout.</span>
     </div>
   </header>
 
   <div class="shell">
     <section class="pmo" id="portfolio-view" aria-label="Executive Portfolio View">
       <div class="exec">
-        <section class="project-charters-section">
-<div class="toolbar">
+        <div class="toolbar">
           <h2>Portfolio View</h2>
           <div class="spacer"></div>
         </div>
@@ -218,12 +198,13 @@
           <div class="badge"><span class="dot r"></span> <span id="ctRed">0</span> Off Track</div>
           <div class="badge">Total: <b id="ctTotal">5</b> projects</div>
         </div>
-      </div></section>
-<section class="pmo">
+      </div>
+
       <div class="toolbar">
         <h3>Project Charters</h3>
         <div class="spacer"></div>
-
+        <div class="spacer"></div>
+      </div>
       <div class="tiles" aria-label="Project charter tiles">
         <a class="tile" href="https://adiaz341.github.io/Project-Charter/" target="_blank" rel="noopener noreferrer">Alejandro Diaz</a>
         <a class="tile" href="https://ryanhwang2.github.io/Week-7-Homework-2-Charter-Iteration/" target="_blank" rel="noopener noreferrer">Ryan Hwang</a>
@@ -232,10 +213,7 @@
         <a class="tile" href="https://alexis-s-pinon.github.io/4860-project-charter/" target="_blank" rel="noopener noreferrer">Alexis Pinon</a>
       </div>
 
-</section>
-<section class="pmo">
-<div class="flow-break"></div>
-<div class="toolbar">
+      <div class="toolbar">
         <h3>Team Status Updates</h3>
         <div class="spacer"></div>
       </div>
@@ -280,11 +258,26 @@
       summary: "Updated version clarifies scope and success criteria. Schedule and deliverables drafted.",
       risk: "None significant; monitoring integration dependencies.",
       next: "Kick off sprint-0 tasks and confirm integration points." },
-    { name: "4860 Project Charter – alexis-s-pinon", owner: "A. Pinon", health: "green",
+    { name: "4860 Project Charter – alexis-s-pinon", owner: "A. Pinon", health: "yellow",
       summary: "Draft finalized with initial stakeholder review. Budget assumptions to be validated.",
       risk: "Budget and vendor timeline risks if assumptions change.",
       next: "Validate budget, align vendor timeline, and set go/no-go gate." }
   ];
+
+  const PMO_LINKS = [
+  "https://adiaz341.github.io/Project-Charter/",
+  "https://ryanhwang2.github.io/Week-7-Homework-2-Charter-Iteration/",
+  "https://winterguy123.github.io/jyan.github.io/",
+  "https://juanstudentaccount.github.io/Updated-Project-Charter/",
+  "https://alexis-s-pinon.github.io/4860-project-charter/"
+];
+  const PMO_NAMES = [
+  "Adrian Diaz",
+  "Ryan Hwang",
+  "J. Yan",
+  "Juan S.",
+  "Alexis S. Pinon"
+];
 
   // Team weekly status updates (edit to add new entries)
   let TEAM_UPDATES = [{
@@ -312,7 +305,14 @@
   function initials(name){ const parts=name.split(/[\s–-]+/).filter(Boolean); const a=(parts[0]||'X')[0]; const b=(parts[1]?.[0]||(parts[0]?.[1]||'')).toUpperCase(); return (a+b).toUpperCase(); }
 
   // --- Tiles ---
-  );
+  function renderTiles(){
+    const root=document.getElementById('tiles'); if(!root) return; root.innerHTML='';
+    PMO_LINKS.forEach((url,i)=>{
+      const label = PMO_NAMES[i] || url;
+      const a=el('a','tile'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; a.title=label;
+      a.appendChild(el('div','name',label));
+      root.appendChild(a);
+    });
   }
 
   // --- Standardized Entry Cards ---
@@ -360,13 +360,65 @@
 
 
   // --- Executive Summary ---
-  function renderSummary(){ /* disabled: manual portfolio view */ } projects, with ${greens} on track, ${yellows} at risk, and ${reds} off track.`,
-      `Common themes include charter finalization, scope alignment, and early milestone planning.`,
-      (yellows>0 || reds>0) ? `Primary risks center on schedule clarity and stakeholder alignment; mitigation actions are in progress.` : `No material risks are trending across the portfolio at this time.`,
-      `Near-term focus is on locking baseline plans, confirming success metrics, and initiating sprint-0 deliverables.`
-    ];
-    $("#execSummary").textContent = exec.join(' ');
+  
+function renderSummary(){
+  const SUM_KEY = "pmo_exec_summary_v1";
+  const G_KEY = "pmo_exec_green_v1";
+  const Y_KEY = "pmo_exec_yellow_v1";
+  const R_KEY = "pmo_exec_red_v1";
+
+  const $ = (s,r=document)=>r.querySelector(s);
+  const sEl = $("#execSummary");
+  const gEl = $("#ctGreen");
+  const yEl = $("#ctYellow");
+  const rEl = $("#ctRed");
+  const tEl = $("#ctTotal");
+
+  // Load
+  const sVal = localStorage.getItem(SUM_KEY);
+  const gVal = localStorage.getItem(G_KEY);
+  const yVal = localStorage.getItem(Y_KEY);
+  const rVal = localStorage.getItem(R_KEY);
+  if(sVal!==null) sEl.textContent = sVal;
+  if(gVal!==null) gEl.textContent = gVal;
+  if(yVal!==null) yEl.textContent = yVal;
+  if(rVal!==null) rEl.textContent = rVal;
+
+  const toInt = (el)=>{
+    const n = parseInt((el.textContent||'0').replace(/[^\\d\\-]/g,''),10);
+    return isFinite(n) ? Math.max(0,n) : 0;
   }
+  const updateTotal = ()=>{
+    const total = toInt(gEl) + toInt(yEl) + toInt(rEl);
+    tEl.textContent = String(total);
+  };
+  updateTotal();
+
+  // Save on input/blur, update total live
+  const saveCounts = ()=>{
+    localStorage.setItem(G_KEY, toInt(gEl));
+    localStorage.setItem(Y_KEY, toInt(yEl));
+    localStorage.setItem(R_KEY, toInt(rEl));
+    updateTotal();
+  };
+  ["input","blur","keyup"].forEach(ev=>{
+    gEl.addEventListener(ev, saveCounts);
+    yEl.addEventListener(ev, saveCounts);
+    rEl.addEventListener(ev, saveCounts);
+  });
+
+  const saveSummary = ()=>{
+    localStorage.setItem(SUM_KEY, sEl.textContent||"");
+  };
+  ["input","blur"].forEach(ev=> sEl.addEventListener(ev, saveSummary));
+
+  // If empty first run, drop a friendly placeholder
+  if(!sEl.textContent.trim()){
+    sEl.textContent = "Write your executive summary here. Keep it 3–5 sentences, in a single consistent PMO voice.";
+    saveSummary();
+  }
+}
+
 
   function setTilesLayout(mode){
     const root=document.getElementById('tiles'); if(!root) return;
@@ -384,6 +436,7 @@
 
   function renderPMO(){
     renderSummary();
+    renderTiles();
     renderUpdates();
     wireLayoutButtons();
     // default to evenly split grid on load
