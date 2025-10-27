@@ -3,425 +3,471 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shared Portfolio View – Class Project Charter</title>
+  <title>Shared Portfolio View – Executive Dashboard</title>
   <style>
-    :root{
-      --bg:#0b0d12; /* deep slate */
-      --panel:#121521;
-      --card:#161a28;
-      --ink:#e8ecf4;
-      --muted:#9aa4b2;
-      --brand:#6aa3ff; /* accent */
-      --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --radius:18px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:linear-gradient(180deg,#0b0d12 0%, #0f1320 100%);
-      color:var(--ink); font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-    }
-    header{
-      position:sticky; top:0; z-index:3;
-      backdrop-filter: blur(6px);
-      background:rgba(11,13,18,.65); border-bottom:1px solid rgba(255,255,255,.06);
-    }
-    .wrap{max-width:1180px; margin:0 auto; padding:24px}
-    .title{display:flex; align-items:flex-start; gap:16px}
-    .title h1{margin:0; font-weight:800; font-size:28px; letter-spacing:.2px}
-    .title p{margin:4px 0 0; color:var(--muted)}
+  /* === PMO Executive Portfolio View === */
+  :root{
+    --ink:#e8ecf1;
+    --muted:#a9b2bd;
+    --panel:#0f1420;
+    --card:#121a29;
+    --accent:#6aa3ff;
+    --shadow:0 6px 24px rgba(0,0,0,.25);
+  }
+  html, body{height:100%}
+  body{margin:0; background:radial-gradient(1200px 800px at 10% -10%, #0b0d12 0%, #0f1320 100%); color:var(--ink); font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";}
+  .shell{max-width:1100px; margin:40px auto; padding:24px}
+  header{position:sticky; top:0; z-index:3; background:rgba(15,19,32,.86); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid rgba(255,255,255,.06);}
+  header .inner{max-width:1100px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:16px}
+  header h1{margin:0; font-size:28px; letter-spacing:.2px}
+  .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid rgba(255,255,255,.12); background:#0d1421; border-radius:999px; color:var(--muted); font-size:13px}
+  .pmo{margin:24px 0; padding:20px; border-radius:16px; background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.06); box-shadow:var(--shadow);}
+  .pmo h2{margin:0 0 6px 0}
+  .exec{display:grid; gap:10px; margin-bottom:16px}
+  .exec .badges{display:flex; gap:8px; flex-wrap:wrap}
+  .badge{display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; background:var(--card); border:1px solid rgba(255,255,255,.06); font-size:12px; color:var(--muted)}
+  .dot{width:10px; height:10px; border-radius:50%}
+  .dot.g{background:#28c76f}
+  .dot.y{background:#ffcc00}
+  .dot.r{background:#ff4d4f}
+  .toolbar{display:flex; align-items:center; gap:10px; margin:10px 0}
+  .toolbar .spacer{flex:1}
 
-    .grid{display:grid; grid-template-columns:420px 1fr; gap:24px; align-items:start}
+  /* Tiles */
+  .tiles{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; margin:6px 0 18px}
+  .tile{display:flex; gap:12px; align-items:center; padding:12px 14px; border:1px solid rgba(255,255,255,.06);
+    background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.00)); border-radius:14px; text-decoration:none; color:var(--ink);
+    transition:transform .16s ease, border-color .16s ease, background .16s ease; box-shadow:var(--shadow)}
+  .tile:hover{transform:translateY(-2px); border-color:rgba(106,163,255,.55); background:linear-gradient(180deg,rgba(106,163,255,.10),rgba(255,255,255,.00))}
+  .avatar{width:36px; height:36px; border-radius:50%; display:grid; place-items:center; font-weight:800;
+    background:radial-gradient(60% 100% at 50% 0%, rgba(255,255,255,.18), rgba(255,255,255,.04)), var(--card);
+    border:1px solid rgba(255,255,255,.08); flex:0 0 36px}
+  .meta-wrap{min-width:0}
+  .name{font-weight:700; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .link{font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 
-    .panel{background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); box-shadow:var(--shadow)}
-    .panel h2{margin:0 0 12px; font-size:18px}
-    .panel .content{padding:20px}
+  /* Standardized entries */
+  .list{display:grid; gap:12px}
+  .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:16px; box-shadow:var(--shadow)}
+  .card .row{display:grid; grid-template-columns:1fr 320px; gap:12px}
+  @media (max-width: 980px){ .card .row{grid-template-columns:1fr} }
+  .kv{display:grid; grid-template-columns:160px 1fr; gap:6px}
+  .kv b{color:var(--muted); font-weight:600}
+  .health{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.1); background:#0d1421}
+  .health .dot{width:8px; height:8px}
+  
+  /* --- Tile layout controls --- */
+  .btn{cursor:pointer; font-weight:600; padding:8px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:var(--card); color:var(--ink);}
+  .btn:hover{border-color:rgba(106,163,255,.55)}
+  .seg{display:inline-flex; gap:8px}
+  .tiles.tiles--row{display:flex; overflow-x:auto; gap:12px; padding-bottom:4px}
+  .tiles.tiles--row .tile{flex:0 0 300px; white-space:normal}
+  .tiles.tiles--even{display:grid; grid-template-columns:repeat(5, 1fr)}
+  @media (max-width: 1200px){ .tiles.tiles--even{grid-template-columns:repeat(3, 1fr)} }
+  @media (max-width: 800px){ .tiles.tiles--even{grid-template-columns:repeat(2, 1fr)} }
+  @media (max-width: 520px){ .tiles.tiles--even{grid-template-columns:repeat(1, 1fr)} }
 
-    .fieldset{display:grid; gap:14px}
-    label{display:block; font-size:13px; color:var(--muted); margin-bottom:6px}
-    input[type="text"], textarea, select{
-      width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.08);
-      background:var(--card); color:var(--ink); outline:none;
-    }
-    textarea{min-height:84px; resize:vertical}
+  
+  /* --- Compact single-line tiles --- */
+  .tiles{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px; margin:6px 0 18px}
+  @media (max-width: 900px){ .tiles{grid-template-columns:repeat(3, minmax(0,1fr))} }
+  @media (max-width: 620px){ .tiles{grid-template-columns:repeat(2, minmax(0,1fr))} }
+  .tile{display:flex; align-items:center; justify-content:center; padding:10px 12px; border:1px solid rgba(255,255,255,.12);
+    background:var(--card); border-radius:12px; text-decoration:none; color:var(--ink); font-weight:600; min-height:44px}
+  .tile:hover{transform:none; border-color:rgba(106,163,255,.55); background:linear-gradient(180deg,rgba(106,163,255,.10),rgba(255,255,255,.00))}
+  .name{font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:14px}
+  .link{display:none} /* hide URL line */
+  .avatar{display:none} /* remove initials bubble */
 
-    .radio-row{display:flex; gap:10px}
-    .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.08); cursor:pointer; user-select:none;}
-    .dot{width:10px; height:10px; border-radius:50%}
-    .dot.ok{background:var(--ok)}.dot.warn{background:var(--warn)}.dot.bad{background:var(--bad)}
-    .pill input{display:none}
-    .pill.active{outline:2px solid rgba(106,163,255,.55)}
+  /* --- Collapsible updates --- */
+  details.update{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:16px; box-shadow:var(--shadow); overflow:hidden}
+  details.update + details.update{margin-top:12px}
+  details.update summary{list-style:none; cursor:pointer; padding:14px 16px; display:flex; align-items:center; gap:10px; user-select:none}
+  details.update summary::-webkit-details-marker{display:none}
+  .summary-row{display:flex; align-items:center; gap:10px; width:100%}
+  .summary-row .spacer{flex:1}
+  .summary-meta{display:flex; gap:12px; color:var(--muted); font-size:12px}
+  .update-body{padding:0 16px 16px}
+  .update-body .row{display:grid; grid-template-columns:1fr; gap:8px}
+  .update-body p{margin:0}
+  .form{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:10px 0 16px}
+  @media (max-width: 800px){ .form{grid-template-columns:1fr} }
+  .field{display:grid; gap:6px}
+  .field label{display:block; font-size:12px; color:var(--muted)}
+  input[type="text"], input[type="date"], textarea, select{
+    width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+    background:var(--card); color:var(--ink); outline:none;
+  }
+  textarea{min-height:72px; resize:vertical}
+  .actions{display:flex; gap:10px; justify-content:flex-end}
+  .btn{cursor:pointer; font-weight:600; padding:8px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:var(--card); color:var(--ink);}
+  .btn.primary{background:#0b3df2; border-color:#0b3df2}
+  .btn.primary:hover{filter:brightness(1.1)}
 
-    .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px}
-    button, .ghost{
-      appearance:none; border:0; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; color:#0b0d12;
-      background:linear-gradient(180deg,#88b7ff,#6aa3ff); box-shadow:var(--shadow)
-    }
-    button.secondary{background:#26314a; color:var(--ink)}
-    button.ghost{background:transparent; color:var(--ink); border:1px dashed rgba(255,255,255,.2)}
+  
+  /* === Spacing fixes for Team Status Updates form === */
+  .form{grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:8px 0 12px; align-items:start}
+  @media (max-width: 900px){ .form{grid-template-columns:1fr} }
+  .field{display:flex; flex-direction:column; gap:6px; margin:0}
+  .field label{margin:0 0 4px 0; font-size:12px; color:var(--muted)}
+  input[type="text"], input[type="date"], textarea, select{
+    padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
+    background:var(--card); color:var(--ink); outline:none; margin:0
+  }
+  select{height:44px}
+  textarea{min-height:64px}
+  .actions{margin-top:2px}
 
-    .portfolio{display:grid; gap:16px}
-    .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
-    .card-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px}
-    .hstack{display:flex; align-items:center; gap:8px}
-    .badge{font-size:12px; color:var(--muted)}
-    .health{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06)}
-    .card h3{margin:0 0 6px}
-    .meta{color:var(--muted); font-size:13px}
-    .card section{margin-top:12px}
-    .card h4{margin:0 0 6px; font-size:13px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em}
+  
+  /* === Update form layout & spacing === */
+  .form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-areas:
+      "date health"
+      "summary highlights"
+      "risks next"
+      "actions actions";
+    gap:12px;
+    margin:10px 0 16px;
+    align-items:start;
+  }
+  @media (max-width: 900px){
+    .form{grid-template-columns:1fr; grid-template-areas:
+      "date" "health" "summary" "highlights" "risks" "next" "actions";}
+  }
+  .field{display:flex; flex-direction:column; gap:6px; margin:0}
+  .field--date{grid-area:date}
+  .field--health{grid-area:health}
+  .field--summary{grid-area:summary}
+  .field--highlights{grid-area:highlights}
+  .field--risks{grid-area:risks}
+  .field--next{grid-area:next}
+  .field--actions{grid-area:actions; display:flex; justify-content:flex-end}
+  .field label{margin:0 0 4px 0; font-size:12px; color:var(--muted)}
+  input[type="text"], input[type="date"], textarea, select{
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
+    background:var(--card); color:var(--ink); outline:none; margin:0
+  }
+  select{height:44px}
+  textarea#updSummary{min-height:96px}
+  textarea{min-height:64px; resize:vertical}
 
-    .toolbar{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
-    .toolbar .spacer{flex:1}
+  
+  /* === Input overflow fix === */
+  *, *::before, *::after { box-sizing: border-box; }
+  .form{gap:12px}
+  .form .field{min-width:0}
+  .form .field input,
+  .form .field select,
+  .form .field textarea{
+    width:100%;
+    max-width:100%;
+    display:block;
+    box-sizing:border-box;
+    overflow:auto;
+  }
 
-    .two{display:grid; gap:16px; grid-template-columns:1fr 1fr}
+  
+  .btn.ghost{background:transparent; border-color:rgba(255,255,255,.18); color:var(--ink)}
+  .btn.ghost:hover{border-color:rgba(106,163,255,.55)}
+  .btn.small{padding:6px 10px; font-size:12px; border-radius:10px}
+  .controls{display:flex; gap:8px}
 
-    .checklist li{margin:8px 0}
-    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; background:#0b0d12; padding:2px 6px; border-radius:6px; border:1px solid rgba(255,255,255,.12)}
-
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-    }
   </style>
 </head>
 <body>
   <header>
-    <div class="wrap title">
-      <div>
-        <h1>Shared Portfolio View</h1>
-        <p>Unified, executive-ready summary of the class project portfolio. Use the form to add standardized entries; the right panel renders the final portfolio in a consistent voice and layout.</p>
-      </div>
+    <div class="inner">
+      <h1>Team Jackal Program Status</h1>
+      <span class="pill">Unified, executive-ready summary of the team's project portfolios.</span>
     </div>
   </header>
 
-  <main class="wrap grid">
-
-    <!-- Input Form -->
-    <aside class="panel" aria-labelledby="formTitle">
-      <div class="content">
-        <h2 id="formTitle">Add / Edit Project Entry</h2>
-        <form id="projectForm" class="fieldset" autocomplete="off">
-          <div>
-            <label for="projName">Project Name <span class="badge">short & clear</span></label>
-            <input id="projName" name="projName" type="text" placeholder="e.g., Campus Event Management Platform" required />
-          </div>
-          <div>
-            <label for="owner">Project Owner / Team Lead <span class="badge">optional</span></label>
-            <input id="owner" name="owner" type="text" placeholder="e.g., Sarah Martinez" />
-          </div>
-
-          <div>
-            <label>Health Bubble</label>
-            <div class="radio-row" role="radiogroup" aria-label="Project health">
-              <label class="pill" data-health="on" tabindex="0"><span class="dot ok"></span> <span>On Track</span>
-                <input type="radio" name="health" value="on" required />
-              </label>
-              <label class="pill" data-health="risk" tabindex="0"><span class="dot warn"></span> <span>At Risk</span>
-                <input type="radio" name="health" value="risk" />
-              </label>
-              <label class="pill" data-health="off" tabindex="0"><span class="dot bad"></span> <span>Off Track</span>
-                <input type="radio" name="health" value="off" />
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label for="summary">Summary (2–3 sentences)</label>
-            <textarea id="summary" name="summary" placeholder="Provide a concise, high-level overview of progress and current focus." required></textarea>
-          </div>
-          <div>
-            <label for="risk">Challenge / Risk</label>
-            <textarea id="risk" name="risk" placeholder="Briefly describe blockers, dependencies, or issues."></textarea>
-          </div>
-          <div>
-            <label for="next">Next Step</label>
-            <textarea id="next" name="next" placeholder="Identify the immediate milestone, decision, or deliverable ahead." required></textarea>
-          </div>
-
-          <div class="actions">
-            <button type="submit" id="saveBtn">Add Project</button>
-            <button type="button" class="secondary" id="resetBtn">Clear Form</button>
-            <button type="button" class="ghost" id="sampleBtn" title="Insert a model entry">Insert Example</button>
-          </div>
-          <small id="summaryHint" class="meta"></small>
-        </form>
-      </div>
-    </aside>
-
-    <!-- Portfolio View -->
-    <section class="panel" aria-labelledby="portfolioTitle">
-      <div class="content">
+  <div class="shell">
+    <section class="pmo" id="portfolio-view" aria-label="Executive Portfolio View">
+      <div class="exec">
         <div class="toolbar">
-          <h2 id="portfolioTitle">Class Portfolio (Executive View)</h2>
+          <h2>Portfolio View</h2>
           <div class="spacer"></div>
-          <button id="copyHtml">Copy as HTML</button>
-          <button class="secondary" id="copyMd">Copy as Markdown</button>
-          <button class="ghost" id="printBtn">Print</button>
         </div>
-        <p class="meta">Entries are normalized to a single voice and standardized structure. Sorts by health (Off Track → At Risk → On Track) then alphabetically.</p>
-        <div id="portfolio" class="portfolio" aria-live="polite"></div>
+        <p id="execSummary"></p>
+        <div class="badges">
+          <div class="badge"><span class="dot g"></span> <span id="ctGreen">0</span> On Track</div>
+          <div class="badge"><span class="dot y"></span> <span id="ctYellow">0</span> At Risk</div>
+          <div class="badge"><span class="dot r"></span> <span id="ctRed">0</span> Off Track</div>
+          <div class="badge">Total: <b id="ctTotal">0</b> projects</div>
+        </div>
       </div>
-    </section>
 
-    <!-- Guidance panels -->
-    <section class="panel two" aria-label="Guidance and Checklist">
-      <div class="content">
-        <h2>Collaboration Best Practices</h2>
-        <ul class="checklist">
-          <li>Designate an editor to ensure consistent voice and formatting.</li>
-          <li>Use a shared document platform; set clear deadlines for submission and editing.</li>
-          <li>Rewrite and synthesize; do not paste raw status notes.</li>
-          <li>Standardize terminology and remove redundant points.</li>
-          <li>Keep tone professional; proofread for grammar and clarity.</li>
-        </ul>
+      <div class="toolbar">
+        <h3>Project Charters</h3>
+        <div class="spacer"></div>
+        <div class="spacer"></div>
       </div>
-      <div class="content">
-        <h2>Step 2 Checklist</h2>
-        <ul class="checklist">
-          <li>Create a shared document accessible to all team members.</li>
-          <li>Collect raw info using the required template structure.</li>
-          <li>Editors harmonize entries into one consistent voice.</li>
-          <li>Apply uniform formatting and health bubbles across entries.</li>
-          <li>Proofread for executive-ready quality.</li>
-        </ul>
-      </div>
-    </section>
-  </main>
+      <div id="tiles" class="tiles" aria-label="Links to individual project charters"></div>
 
-  <template id="cardTemplate">
-    <article class="card" data-id="">
-      <div class="card-head">
-        <div>
-          <h3 class="projName"></h3>
-          <div class="meta owner"></div>
-        </div>
-        <div class="hstack">
-          <span class="health"><span class="dot" aria-hidden="true"></span><span class="label"></span></span>
-          <button class="secondary editBtn" title="Edit entry">Edit</button>
-          <button class="ghost delBtn" title="Remove entry">Remove</button>
-        </div>
+      <div class="toolbar">
+        <h3>Team Status Updates</h3>
+        <div class="spacer"></div>
       </div>
-      <section>
-        <h4>Summary</h4>
-        <p class="summary"></p>
-      </section>
-      <section class="riskWrap">
-        <h4>Challenge / Risk</h4>
-        <p class="risk"></p>
-      </section>
-      <section>
-        <h4>Next Step</h4>
-        <p class="next"></p>
-      </section>
-    </article>
-  </template>
+      
+      <div class="form" id="updateForm">
+        <div class="field field--date"><label>Date</label><input type="date" id="updDate"></div>
+        <div class="field field--health"><label>Health</label>
+          <select id="updHealth">
+            <option value="green">On Track</option>
+            <option value="yellow">At Risk</option>
+            <option value="red">Off Track</option>
+          </select>
+        </div>
+        <div class="field field--summary"><label>Summary (2–3 sentences)</label><textarea id="updSummary" placeholder="Concise update in a consistent, professional tone"></textarea></div>
+        <div class="field field--highlights"><label>Highlights (comma-separated)</label><textarea id="updHighlights" placeholder="Key wins, progress"></textarea></div>
+        <div class="field field--risks"><label>Challenges / Risks (comma-separated)</label><textarea id="updRisks" placeholder="Issues, dependencies"></textarea></div>
+        <div class="field field--next"><label>Next Week Focus (comma-separated)</label><textarea id="updNext" placeholder="Immediate priorities"></textarea></div>
+        <div class="actions field--actions"><button class="btn primary" id="addUpdateBtn">Add Update</button></div>
+      </div>
+      <div class="toolbar"><h3>Recent Updates</h3><div class="spacer"></div><div class="controls"><button class="btn ghost small" id="expandAllBtn">Expand All</button><button class="btn ghost small" id="collapseAllBtn">Collapse All</button></div></div>
+      <div class="list" id="updatesList" aria-label="Recent team updates"></div>
+
+    </section>
+  </div>
 
   <script>
-    const form = document.getElementById('projectForm');
-    const portfolioEl = document.getElementById('portfolio');
-    const tpl = document.getElementById('cardTemplate');
-    const summaryHint = document.getElementById('summaryHint');
-    const saveBtn = document.getElementById('saveBtn');
+  // --- Data (edit to update the dashboard) ---
+  const PMO_PROJECTS = [
+    { name: "Project Charter – adiaz341", owner: "A. Diaz", health: "green",
+      summary: "Scope defined and initial charter published. Team is aligning on milestones and responsibilities.",
+      risk: "None material at this stage; awaiting feedback alignment.",
+      next: "Confirm success metrics and finalize schedule." },
+    { name: "Charter Iteration – ryanhwang2", owner: "R. Hwang", health: "green",
+      summary: "Iteration incorporates early feedback and clarifies deliverables. Dependencies captured.",
+      risk: "Minor: timeline sensitivity around resource availability.",
+      next: "Lock resourcing and publish baseline plan." },
+    { name: "jyan Charter – winterguy123", owner: "J. Yan", health: "yellow",
+      summary: "Key requirements identified; validation in progress. Several open questions remain with stakeholders.",
+      risk: "Open requirements may affect scope and schedule if not resolved promptly.",
+      next: "Complete stakeholder review and resolve open questions." },
+    { name: "Updated Charter – juanstudentaccount", owner: "Juan S.", health: "green",
+      summary: "Updated version clarifies scope and success criteria. Schedule and deliverables drafted.",
+      risk: "None significant; monitoring integration dependencies.",
+      next: "Kick off sprint-0 tasks and confirm integration points." },
+    { name: "4860 Project Charter – alexis-s-pinon", owner: "A. Pinon", health: "yellow",
+      summary: "Draft finalized with initial stakeholder review. Budget assumptions to be validated.",
+      risk: "Budget and vendor timeline risks if assumptions change.",
+      next: "Validate budget, align vendor timeline, and set go/no-go gate." }
+  ];
 
-    // Local state
-    let editingId = null;
-    let projects = JSON.parse(localStorage.getItem('portfolio.projects')||'[]');
+  const PMO_LINKS = [
+  "https://adiaz341.github.io/Project-Charter/",
+  "https://ryanhwang2.github.io/Week-7-Homework-2-Charter-Iteration/",
+  "https://winterguy123.github.io/jyan.github.io/",
+  "https://juanstudentaccount.github.io/Updated-Project-Charter/",
+  "https://alexis-s-pinon.github.io/4860-project-charter/"
+];
+  const PMO_NAMES = [
+  "Alajandro Diaz",
+  "Ryan Hwang",
+  "Jeremy Yan",
+  "Juan Talome",
+  "Alexis Pinon"
+];
 
-    // Helpers
-    const uid = () => Math.random().toString(36).slice(2,9);
-
-    function countSentences(text){
-      const cleaned = (text||'').replace(/\s+/g,' ').trim();
-      if(!cleaned) return 0;
-      // naive: split on period, exclamation, question marks
-      return cleaned.split(/[.!?]+\s/).filter(Boolean).length;
+  // Team weekly status updates (edit to add new entries)
+  let TEAM_UPDATES = [{
+      date: "2025-10-26",
+      owner: "PMO",
+      health: "green",
+      highlights: [
+        "All charters published in shared view; baseline scope and success metrics drafted.",
+        "Initial milestone plan agreed by most teams."
+      ],
+      risks: [
+        "Two projects awaiting stakeholder sign-off may slip if feedback delays continue."
+      ],
+      next: [
+        "Lock baselines, confirm resourcing, and launch sprint-0 ceremonies."
+      ]
     }
-    function normalize(text){
-      return (text||'').replace(/\s+/g,' ').trim();
-    }
+  ];
 
-    function healthLabel(val){
-      return val==='off' ? 'Off Track' : val==='risk' ? 'At Risk' : 'On Track';
-    }
-    function healthColor(val){
-      return val==='off' ? 'bad' : val==='risk' ? 'warn' : 'ok';
-    }
 
-    function validate(){
-      const sum = document.getElementById('summary').value;
-      const n = countSentences(sum);
-      if(n<2 || n>3){
-        summaryHint.textContent = `Tip: Summaries should be 2–3 sentences (currently ${n || 0}).`;
-      } else {
-        summaryHint.textContent = '';
-      }
-    }
+  // --- Helpers ---
+  const $ = (s, r=document) => r.querySelector(s);
+  function el(tag, cls, txt){ const n=document.createElement(tag); if(cls) n.className=cls; if(txt!==undefined) n.textContent=txt; return n; }
+  function cap(s){ return s.replace(/\b\w/g,m=>m.toUpperCase()); }
+  function initials(name){ const parts=name.split(/[\s–-]+/).filter(Boolean); const a=(parts[0]||'X')[0]; const b=(parts[1]?.[0]||(parts[0]?.[1]||'')).toUpperCase(); return (a+b).toUpperCase(); }
 
-    form.addEventListener('input', e=>{
-      if(e.target.id==='summary') validate();
-      if(e.target.closest('.pill')){
-        document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
-        e.target.closest('.pill').classList.add('active');
-      }
+  // --- Tiles ---
+  function renderTiles(){
+    const root=document.getElementById('tiles'); if(!root) return; root.innerHTML='';
+    PMO_LINKS.forEach((url,i)=>{
+      const label = PMO_NAMES[i] || url;
+      const a=el('a','tile'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; a.title=label;
+      a.appendChild(el('div','name',label));
+      root.appendChild(a);
     });
-    document.querySelectorAll('.pill').forEach(p=>addEventListener('click',()=>{
-      document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
-      p.classList.add('active');
-      p.querySelector('input').checked = true;
-    }));
+  }
 
-    function saveToStorage(){
-      localStorage.setItem('portfolio.projects', JSON.stringify(projects));
-    }
+  // --- Standardized Entry Cards ---
+  function healthChip(h){
+    const chip=el('span','health');
+    const dot=el('span','dot ' + (h==='green'?'g':h==='yellow'?'y':'r'));
+    chip.appendChild(dot);
+    chip.appendChild(el('span','', h==='green'?'On Track':(h==='yellow'?'At Risk':'Off Track')));
+    return chip;
+  }
 
-    function render(){
-      portfolioEl.innerHTML = '';
-      // Sort: Off Track -> At Risk -> On Track, then A-Z
-      const rank = {off:0, risk:1, on:2};
-      const sorted = [...projects].sort((a,b)=>{
-        if(rank[a.health]!==rank[b.health]) return rank[a.health]-rank[b.health];
-        return a.name.localeCompare(b.name, undefined, {sensitivity:'base'});
-      });
-      for(const p of sorted){
-        const clone = tpl.content.cloneNode(true);
-        const root = clone.querySelector('article');
-        root.dataset.id = p.id;
-        root.querySelector('.projName').textContent = p.name;
-        root.querySelector('.owner').textContent = p.owner ? `Owner: ${p.owner}` : '';
-        root.querySelector('.summary').textContent = p.summary;
-        if(p.risk){
-          root.querySelector('.risk').textContent = p.risk;
-        } else {
-          root.querySelector('.riskWrap').style.display='none';
-        }
-        root.querySelector('.next').textContent = p.next;
-        const dot = root.querySelector('.dot');
-        dot.classList.add(healthColor(p.health));
-        root.querySelector('.label').textContent = healthLabel(p.health);
-        // hooks
-        root.querySelector('.editBtn').addEventListener('click', ()=>startEdit(p.id));
-        root.querySelector('.delBtn').addEventListener('click', ()=>removeProject(p.id));
-        portfolioEl.appendChild(clone);
-      }
-    }
+  function renderUpdates(){
+    const list=document.getElementById('updatesList'); if(!list) return; list.innerHTML='';
+    const items=[...TEAM_UPDATES].sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+    items.forEach((u,idx)=>{
+      const det=document.createElement('details'); det.className='update'; if(idx===0) det.setAttribute('open','open');
+      // keep pointer to original array index for stable edit/delete
+      const origIndex = TEAM_UPDATES.indexOf(u);
+      det.dataset.idx = String(origIndex);
 
-    function startEdit(id){
-      const p = projects.find(x=>x.id===id);
-      if(!p) return;
-      editingId = id;
-      form.projName.value = p.name;
-      form.owner.value = p.owner||'';
-      form.summary.value = p.summary;
-      form.risk.value = p.risk||'';
-      form.next.value = p.next;
-      document.querySelectorAll('.pill').forEach(x=>{
-        const checked = x.dataset.health===p.health;
-        x.classList.toggle('active', checked);
-        x.querySelector('input').checked = checked;
-      });
-      saveBtn.textContent = 'Update Project';
-      form.projName.focus();
-      validate();
-    }
+      const sum=document.createElement('summary');
+      const row=el('div','summary-row');
+      row.appendChild(el('strong','', `Update – ${u.date}`));
+      row.appendChild(el('span','spacer'));
+      const meta=el('div','summary-meta'); meta.appendChild(el('span','', u.owner||'')); meta.appendChild(healthChip(u.health||'green'));
+      row.appendChild(meta);
+      sum.appendChild(row); det.appendChild(sum);
 
-    function removeProject(id){
-      projects = projects.filter(p=>p.id!==id);
-      saveToStorage();
-      render();
-    }
+      const body=el('div','update-body');
+      body.appendChild(el('p','', 'Summary: ' + (u.summary || '-')));
+      body.appendChild(el('p','', 'Highlights: ' + (u.highlights?.join(' • ')||'-')));
+      body.appendChild(el('p','', 'Challenges / Risks: ' + (u.risks?.join(' • ')||'-')));
+      body.appendChild(el('p','', 'Next Week Focus: ' + (u.next?.join(' • ')||'-')));
 
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const data = new FormData(form);
-      const name = normalize(data.get('projName'));
-      const owner = normalize(data.get('owner'));
-      const summary = normalize(data.get('summary'));
-      const risk = normalize(data.get('risk'));
-      const next = normalize(data.get('next'));
-      const health = data.get('health');
+      const actions=el('div','actions');
+      const editBtn=el('button','btn small','Edit'); editBtn.type='button'; editBtn.addEventListener('click', (e)=>{ e.preventDefault(); startEdit(origIndex); });
+      const delBtn=el('button','btn ghost small','Delete'); delBtn.type='button'; delBtn.addEventListener('click', (e)=>{ e.preventDefault(); deleteUpdate(origIndex); });
+      actions.appendChild(editBtn); actions.appendChild(delBtn);
+      body.appendChild(actions);
 
-      if(!name || !summary || !next || !health){
-        alert('Please complete required fields (Project Name, Health, Summary, Next Step).');
-        return;
-      }
-      const sCount = countSentences(summary);
-      if(sCount<2 || sCount>3){
-        if(!confirm('Summaries should be 2–3 sentences. Continue anyway?')) return;
-      }
-
-      if(editingId){
-        projects = projects.map(p=> p.id===editingId ? {...p, name, owner, summary, risk, next, health} : p);
-      } else {
-        projects.push({id:uid(), name, owner, summary, risk, next, health});
-      }
-      editingId = null;
-      form.reset();
-      document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
-      saveBtn.textContent = 'Add Project';
-      summaryHint.textContent = '';
-      saveToStorage();
-      render();
+      det.appendChild(body);
+      list.appendChild(det);
     });
+  }
 
-    document.getElementById('resetBtn').addEventListener('click', ()=>{
-      editingId = null; form.reset(); summaryHint.textContent=''; saveBtn.textContent='Add Project';
-      document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
-    });
 
-    document.getElementById('sampleBtn').addEventListener('click', ()=>{
-      form.projName.value = 'Campus Event Management Platform';
-      form.owner.value = 'Sarah Martinez';
-      form.summary.value = 'The team completed the database schema design and initiated frontend development for the event registration module. User authentication implementation is underway with completion targeted for next week. Initial stakeholder feedback on wireframes has been positive, validating the proposed user experience approach.';
-      form.risk.value = 'Third-party payment gateway integration is more complex than anticipated; awaiting updated API documentation may delay launch by 1–2 weeks.';
-      form.next.value = 'Complete user authentication module and conduct security testing. Finalize payment integration approach by end of week.';
-      document.querySelector('[data-health="on"]').click();
-      validate();
-    });
+  // --- Executive Summary ---
+  function renderSummary(){
+    const total=PMO_PROJECTS.length;
+    const greens=PMO_PROJECTS.filter(p=>p.health==='green').length;
+    const yellows=PMO_PROJECTS.filter(p=>p.health==='yellow').length;
+    const reds=PMO_PROJECTS.filter(p=>p.health==='red').length;
+    $("#ctTotal").textContent=total;
+    $("#ctGreen").textContent=greens;
+    $("#ctYellow").textContent=yellows;
+    $("#ctRed").textContent=reds;
+    const exec = [
+      `The program currently spans ${total} projects, with ${greens} on track, ${yellows} at risk, and ${reds} off track.`,
+      `Common themes include charter finalization, scope alignment, and early milestone planning.`,
+      (yellows>0 || reds>0) ? `Primary risks center on schedule clarity and stakeholder alignment; mitigation actions are in progress.` : `No material risks are trending across the portfolio at this time.`,
+      `Near-term focus is on locking baseline plans, confirming success metrics, and initiating sprint-0 deliverables.`
+    ];
+    $("#execSummary").textContent = exec.join(' ');
+  }
 
-    // Exporters
-    function portfolioAsHTML(){
-      const container = document.createElement('div');
-      container.innerHTML = portfolioEl.innerHTML; // shallow clone of rendered cards
-      return container.innerHTML.trim();
+  function setTilesLayout(mode){
+    const root=document.getElementById('tiles'); if(!root) return;
+    root.classList.remove('tiles--row','tiles--even');
+    if(mode==='row'){ root.classList.add('tiles--row'); }
+    if(mode==='even'){ root.classList.add('tiles--even'); }
+  }
+
+  function wireLayoutButtons(){
+    const rowBtn=document.getElementById('tilesRowBtn');
+    const evenBtn=document.getElementById('tilesEvenBtn');
+    if(rowBtn) rowBtn.addEventListener('click', ()=> setTilesLayout('row'));
+    if(evenBtn) evenBtn.addEventListener('click', ()=> setTilesLayout('even'));
+  }
+
+  function renderPMO(){
+    renderSummary();
+    renderTiles();
+    renderUpdates();
+    wireLayoutButtons();
+    // default to evenly split grid on load
+    setTilesLayout('even');
+  }
+  
+  // ----- Persistence for updates -----
+  const STORAGE_KEY = "pmo_team_updates_v1";
+  function loadUpdates(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      const arr=JSON.parse(raw);
+      if(Array.isArray(arr)) TEAM_UPDATES = arr;
+    }catch(e){}
+  }
+  function saveUpdates(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(TEAM_UPDATES)); }catch(e){}
+  }
+  function addUpdateFromForm(){
+    const d=document.getElementById('updDate').value || new Date().toISOString().slice(0,10);
+    const h=document.getElementById('updHealth').value || 'green';
+    const s=(document.getElementById('updSummary').value||'').trim();
+    const hl=(document.getElementById('updHighlights').value||'').split(',').map(s=>s.trim()).filter(Boolean);
+    const rk=(document.getElementById('updRisks').value||'').split(',').map(s=>s.trim()).filter(Boolean);
+    const nx=(document.getElementById('updNext').value||'').split(',').map(s=>s.trim()).filter(Boolean);
+    const payload = {date:d, owner:'PMO', summary:s, health:h, highlights:hl, risks:rk, next:nx};
+
+    if(EDIT_INDEX!==null){
+      TEAM_UPDATES[EDIT_INDEX] = payload;
+    } else {
+      TEAM_UPDATES.push(payload);
     }
-    function portfolioAsMarkdown(){
-      const rows = [];
-      const rank = {off:'🔴 Off Track', risk:'🟡 At Risk', on:'🟢 On Track'};
-      const sorted = [...projects].sort((a,b)=>{
-        const r = {off:0,risk:1,on:2};
-        return r[a.health]-r[b.health] || a.name.localeCompare(b.name);
-      });
-      for(const p of sorted){
-        rows.push(
-`### ${p.name}
-*Health:* ${rank[p.health]}${p.owner?`  |  *Owner:* ${p.owner}`:''}
+    saveUpdates();
+    renderUpdates();
+    // reset editing state & clear inputs (keep date/health)
+    EDIT_INDEX = null;
+    const btn = document.getElementById('addUpdateBtn'); if(btn){ btn.textContent='Add Update'; }
+    ['updSummary','updHighlights','updRisks','updNext'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  }
 
-**Summary**  
-${p.summary}
-${p.risk?`
-**Challenge / Risk**  
-${p.risk}`:''}
+  
+  // ----- Expand/Collapse All -----
+  function expandAllUpdates(){ document.querySelectorAll('details.update').forEach(d=>d.setAttribute('open','open')); }
+  function collapseAllUpdates(){ document.querySelectorAll('details.update').forEach(d=>d.removeAttribute('open')); }
 
-**Next Step**  
-${p.next}
-`);
-      }
-      return rows.join('
-');
-    }
+  // ----- Edit/Delete -----
+  let EDIT_INDEX = null;
+  function startEdit(idx){
+    const u = TEAM_UPDATES[idx]; if(!u) return;
+    document.getElementById('updDate').value = u.date || '';
+    document.getElementById('updHealth').value = u.health || 'green';
+    document.getElementById('updSummary').value = u.summary || '';
+    document.getElementById('updHighlights').value = (u.highlights||[]).join(', ');
+    document.getElementById('updRisks').value = (u.risks||[]).join(', ');
+    document.getElementById('updNext').value = (u.next||[]).join(', ');
+    const btn = document.getElementById('addUpdateBtn');
+    if(btn){ btn.textContent = 'Save Update'; }
+    EDIT_INDEX = idx;
+    // scroll into view
+    document.getElementById('updateForm').scrollIntoView({behavior:'smooth', block:'start'});
+  }
 
-    async function copy(text){
-      try{ await navigator.clipboard.writeText(text); alert('Copied to clipboard.'); }
-      catch(e){ console.error(e); alert('Could not copy automatically. Select and copy manually.'); }
-    }
+  function deleteUpdate(idx){
+    if(idx==null || idx<0 || idx>=TEAM_UPDATES.length) return;
+    TEAM_UPDATES.splice(idx,1);
+    saveUpdates();
+    renderUpdates();
+  }
 
-    document.getElementById('copyHtml').addEventListener('click', ()=>copy(portfolioAsHTML()));
-    document.getElementById('copyMd').addEventListener('click', ()=>copy(portfolioAsMarkdown()));
-    document.getElementById('printBtn').addEventListener('click', ()=>window.print());
+  document.addEventListener('DOMContentLoaded', ()=>{
+    loadUpdates();
+    renderPMO();
+    const addBtn=document.getElementById('addUpdateBtn');
+    if(addBtn){ addBtn.addEventListener('click', (e)=>{ e.preventDefault(); addUpdateFromForm(); }); }
+    const ex=document.getElementById('expandAllBtn'); if(ex){ ex.addEventListener('click', (e)=>{ e.preventDefault(); expandAllUpdates(); }); }
+    const cl=document.getElementById('collapseAllBtn'); if(cl){ cl.addEventListener('click', (e)=>{ e.preventDefault(); collapseAllUpdates(); }); }
+  });
 
-    // Initial hydrate
-    render();
   </script>
 </body>
 </html>
