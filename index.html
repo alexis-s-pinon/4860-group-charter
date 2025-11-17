@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,59 +14,326 @@
       --accent: #6aa3ff;
       --shadow: 0 6px 24px rgba(0, 0, 0, .25);
     }
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { height: 100% }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
     body {
       margin: 0;
       background: radial-gradient(1200px 800px at 10% -10%, #0b0d12 0%, #0f1320 100%);
       color: var(--ink);
       font: 16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     }
-    .shell { max-width: 1100px; margin: 6px auto; padding: 24px }
-    header { position: sticky; top: 0; z-index: 3; background: rgba(15, 19, 32, .86); backdrop-filter: saturate(140%) blur(8px); border-bottom: 1px solid rgba(255, 255, 255, .06); }
-    header .inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 16px }
-    header h1 { margin: 0; font-size: 28px; letter-spacing: .2px }
-    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border: 1px solid rgba(255, 255, 255, .12); background: #0d1421; border-radius: 999px; color: var(--muted); font-size: 13px; }
-    .pmo { margin: 24px 0; padding: 20px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border: 1px solid rgba(255,255,255,.06); box-shadow: var(--shadow); }
-    .pmo h2 { margin: 0 0 6px 0 }
-    .exec { display: grid; gap: 10px; margin-bottom: 16px }
-    .exec .badges { display: flex; gap: 8px; flex-wrap: wrap }
-    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: var(--card); border: 1px solid rgba(255,255,255,.06); font-size: 12px; color: var(--muted); }
-    .dot { width: 10px; height: 10px; border-radius: 50% }
-    .dot.g { background: #28c76f } .dot.y { background: #ffcc00 } .dot.r { background: #ff4d4f }
-    .toolbar { display: flex; align-items: center; gap: 10px; margin: 10px 0 }
-    .toolbar .spacer { flex: 1 }
-    .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 6px 0 18px; }
-    @media (max-width: 900px){ .tiles { grid-template-columns: repeat(3, minmax(0,1fr)) } }
-    @media (max-width: 620px){ .tiles { grid-template-columns: repeat(2, minmax(0,1fr)) } }
-    .tile { display: flex; align-items: center; justify-content: center; padding: 10px 12px; border: 1px solid rgba(255,255,255,.12); background: var(--card); border-radius: 12px; text-decoration: none; color: var(--ink); font-weight: 600; min-height: 44px }
-    .tile:hover { border-color: rgba(106,163,255,.55); background: linear-gradient(180deg, rgba(106,163,255,.10), rgba(255,255,255,.00)) }
-    .list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-flow: row dense; column-gap: 16px; row-gap: 28px; align-items: start; margin-bottom: 32px; }
-    @media (max-width: 980px){ .list { grid-template-columns: repeat(2, minmax(0,1fr)) } }
-    @media (max-width: 640px){ .list { grid-template-columns: 1fr } }
-    .list + .toolbar { margin-top: 32px }
-    .card { background: var(--card); border: 1px solid rgba(255,255,255,.06); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); height: auto; }
-    .kv { display: grid; grid-template-columns: 140px 1fr; gap: 6px 10px; margin-bottom: 8px; }
-    @media (max-width: 480px){ .kv { grid-template-columns: 1fr } .kv b { margin-top: 6px } }
-    .kv b { color: var(--muted); font-weight: 600 }
-    .health { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.1); background: #0d1421 }
-    .health .dot { width: 8px; height: 8px }
-    .card .row { display: grid; grid-template-columns: 1fr; gap: 8px }
-    .card p { margin: 0 0 8px 0; overflow-wrap: anywhere; hyphens: auto }
-    .card strong { white-space: nowrap }
-    details.update { background: var(--card); border: 1px solid rgba(255,255,255,.06); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden }
-    details.update + details.update { margin-top: 12px }
-    details.update summary { list-style: none; cursor: pointer; padding: 14px 16px; display: flex; align-items: center; gap: 10px; user-select: none }
-    details.update summary::-webkit-details-marker { display: none }
-    .summary-row { display: flex; align-items: center; gap: 10px; width: 100% }
-    .summary-row .spacer { flex: 1 }
-    .summary-meta { display: flex; gap: 12px; color: var(--muted); font-size: 12px }
-    .update-body { padding: 0 16px 16px }
-    .update-body .row { display: grid; grid-template-columns: 1fr; gap: 8px }
-    .update-body p { margin: 0 }
-    .extlink { font-size: 12px; color: var(--ink); opacity: .9; text-decoration: underline }
+
+    .shell {
+      max-width: 1100px;
+      margin: 6px auto;
+      padding: 24px
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: rgba(15, 19, 32, .86);
+      backdrop-filter: saturate(140%) blur(8px);
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    header .inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: .2px
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: #0d1421;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pmo {
+      margin: 24px 0;
+      padding: 20px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(255, 255, 255, .01));
+      border: 1px solid rgba(255, 255, 255, .06);
+      box-shadow: var(--shadow);
+    }
+
+    .pmo h2 {
+      margin: 0 0 6px 0
+    }
+
+    .exec {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px
+    }
+
+    .exec .badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, .06);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%
+    }
+
+    .dot.g {
+      background: #28c76f
+    }
+
+    .dot.y {
+      background: #ffcc00
+    }
+
+    .dot.r {
+      background: #ff4d4f
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0
+    }
+
+    .toolbar .spacer {
+      flex: 1
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin: 6px 0 18px;
+    }
+
+    @media (max-width: 900px) {
+      .tiles {
+        grid-template-columns: repeat(3, minmax(0, 1fr))
+      }
+    }
+
+    @media (max-width: 620px) {
+      .tiles {
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+      }
+    }
+
+    .tile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: var(--card);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 600;
+      min-height: 44px
+    }
+
+    .tile:hover {
+      border-color: rgba(106, 163, 255, .55);
+      background: linear-gradient(180deg, rgba(106, 163, 255, .10), rgba(255, 255, 255, .00))
+    }
+
+    .list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-flow: row dense;
+      column-gap: 16px;
+      row-gap: 28px;
+      align-items: start;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 980px) {
+      .list {
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+      }
+    }
+
+    @media (max-width: 640px) {
+      .list {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .list+.toolbar {
+      margin-top: 32px
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      height: auto;
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 6px 10px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .kv {
+        grid-template-columns: 1fr
+      }
+
+      .kv b {
+        margin-top: 6px
+      }
+    }
+
+    .kv b {
+      color: var(--muted);
+      font-weight: 600
+    }
+
+    .health {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .1);
+      background: #0d1421
+    }
+
+    .health .dot {
+      width: 8px;
+      height: 8px
+    }
+
+    .card .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px
+    }
+
+    .card p {
+      margin: 0 0 8px 0;
+      overflow-wrap: anywhere;
+      hyphens: auto
+    }
+
+    .card strong {
+      white-space: nowrap
+    }
+
+    details.update {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden
+    }
+
+    details.update+details.update {
+      margin-top: 12px
+    }
+
+    details.update summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none
+    }
+
+    details.update summary::-webkit-details-marker {
+      display: none
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%
+    }
+
+    .summary-row .spacer {
+      flex: 1
+    }
+
+    .summary-meta {
+      display: flex;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 12px
+    }
+
+    .update-body {
+      padding: 0 16px 16px
+    }
+
+    .update-body .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px
+    }
+
+    .update-body p {
+      margin: 0
+    }
+
+    .extlink {
+      font-size: 12px;
+      color: var(--ink);
+      opacity: .9;
+      text-decoration: underline
+    }
   </style>
 </head>
+
 <body>
   <header>
     <div class="inner">
@@ -111,14 +379,18 @@
           </div>
           <div class="row">
             <div>
-              <p><strong>Summary:</strong> This week, I continued studying for the ISC2 exam I will take in two weeks. I also continued my studies on networking basics, gaining a deeper understanding of networking and becoming more confident in what I have learned so far. As the time comes closer to finishing, part of me feels as though I will continue this progress after this semester is done. Meanwhile, I will continue building my skills in the fundamentals.</p>
+              <p><strong>Summary:</strong> This week went well, and there was significant progress on the Networking Basics module. Three chapters were completed, and this pushed the completion date forward.
+              Studying continues for the ISC2 exam, which is coming this week, but the path there looks to be in high spirits. The networking basics badge should be completed within the next 2 weeks.</p>
             </div>
             <div>
               <p><strong>Challenge / Risk:</strong> No major risks identified at this time.</p>
-              <p><strong>Next Step:</strong> I will continue trying to burn through the networking basics modules, study for module 2 of ISC2 training, and attempt a practice test to gauge my understanding of the material.</p>
+              <p><strong>Next Step:</strong> Significant progress will continue to be made on the Networking Basics module to complete it within the next two weeks. There will also be an increase 
+                in time studied for the ISC2 exam. At this rate, confidence is high that the ISC2 certification will be achieved when the exam is taken this thursday.
+              </p>
             </div>
           </div>
-          <p><a class="extlink" href="https://adiaz341.github.io/Project-Charter/" target="_blank" rel="noopener noreferrer">View Charter</a></p>
+          <p><a class="extlink" href="https://adiaz341.github.io/Project-Charter/" target="_blank"
+              rel="noopener noreferrer">View Charter</a></p>
         </article>
 
         <article class="card" aria-labelledby="p2-name">
@@ -132,11 +404,12 @@
               <p><strong>Summary:</strong> This week, I completed the practice exam for CompTIA A+, as well as the Resource Utilization Report. I am continuing to maintain a strong professional relationship with my single remaining contact. Began working on final deliverables. </p>
             </div>
             <div>
-              <p><strong>Challenge / Risk:</strong> As of now, there are no risks or present challenges.</p>
-              <p><strong>Next Step:</strong> I will submit the Resource Report for peer review, incorporate said feedback, update my LinkedIn with my newfound relevant experiences and training. Additionally, I will perform a practice interview with CSULA Career Center and work on the closure documents.</p>
+              <p><strong>Challenge / Risk:</strong> There are no current issues or challenges.</p>
+              <p><strong>Next Step:</strong> I will incorporate peer review into final version of resource report, commit to relationship with the single contact, and work on final closure documents. Additionally, I will update my LinkedIn with relevant training and skills enhancement, while attending a mock interview with CSULA Career Center for interview prep.</p>
             </div>
           </div>
-          <p><a class="extlink" href="https://ryanhwang2.github.io/Week-7-Homework-2-Charter-Iteration/" target="_blank" rel="noopener noreferrer">View Charter</a></p>
+          <p><a class="extlink" href="https://ryanhwang2.github.io/Week-7-Homework-2-Charter-Iteration/" target="_blank"
+              rel="noopener noreferrer">View Charter</a></p>
         </article>
 
         <article class="card" aria-labelledby="p3-name">
@@ -147,14 +420,15 @@
           </div>
           <div class="row">
             <div>
-              <p><strong>Summary:</strong> Milestone 2 (Reworked resume) complete. Work on Milestone 3 (Certification exam) begins. Study material has been acquired and is studying for the exam is in progress.</p>
+              <p><strong>Summary:</strong> Currently reviewing study material for the CC exam. Took a practice exam and identified problem areas to focus on.</p>
             </div>
             <div>
-              <p><strong>Challenge / Risk:</strong> New information regarding the exam has resulted in the expected completion date to 11/22.</p>
+              <p><strong>Challenge / Risk:</strong> No challenges at this time, proceeding with studying the exam material.</p>
               <p><strong>Next Step:</strong> Study for the ISC2 exam, and complete the exam on the 22nd.</p>
             </div>
           </div>
-          <p><a class="extlink" href="https://winterguy123.github.io/jyan.github.io/" target="_blank" rel="noopener noreferrer">View Charter</a></p>
+          <p><a class="extlink" href="https://winterguy123.github.io/jyan.github.io/" target="_blank"
+              rel="noopener noreferrer">View Charter</a></p>
         </article>
 
         <article class="card" aria-labelledby="p4-name">
@@ -165,15 +439,19 @@
           </div>
           <div class="row">
             <div>
-              <p><strong>Summary:</strong> This week I am continuing to execute my deliverables and more specifically this week I continued to work on my google professional IT certificate and I have advanced to module 3. So far at this pace I continue to be on track and I am continuing to monitor for any risks in my project. For this week there were no changes in scope or timeline changes since my last report.</p>
+              <p><strong>Summary:</strong> This week I continued to work on my certificate and I have advanced to my fourth module, Additionaly I completed a job search and im working on finishing up my last deliverables.</p>
             </div>
             <div>
-              <p><strong>Challenge / Risk:</strong> No risks have been identified this period. I will continue to monitor and execute my
+              <p><strong>Challenge / Risk:</strong> No risks have been identified this period. I will continue to
+                monitor and execute my
                 my deliverables.</p>
-              <p><strong>Next Step:</strong> Continute to work on my google IT professional certificate, after finishing my certificate my next upcoming deliverables are my LinkedIn profile enhancement and applying to IT help desk positions.</p>
+              <p><strong>Next Step:</strong> Continue to work on my google IT professional certificate and finish it, after finishing
+                my certificate my next upcoming deliverables are my LinkedIn profile enhancement and applying to IT help
+                desk positions.</p>
             </div>
           </div>
-          <p><a class="extlink" href="https://juanstudentaccount.github.io/Updated-Project-Charter/" target="_blank" rel="noopener noreferrer">View Charter</a></p>
+          <p><a class="extlink" href="https://juanstudentaccount.github.io/Updated-Project-Charter/" target="_blank"
+              rel="noopener noreferrer">View Charter</a></p>
         </article>
 
         <article class="card" aria-labelledby="p5-name">
@@ -184,14 +462,15 @@
           </div>
           <div class="row">
             <div>
-              <p><strong>Summary:</strong> This week, I have continued working on my business analysis and database projects. I also started working more on my website design and creation. My problem management research is also underway.</p>
+              <p><strong>Summary:</strong> The week is going well. Most milestones have been completed.</p>
             </div>
             <div>
-              <p><strong>Challenge / Risk:</strong> Right now, there aren't any challanges that are threatening my project. The only challenge I came across this week was realizing that I likely wouldn't be able to find and interview professionals in problem management careers because the titles can vary so vastly, so I adjusted and decided to focus on researching the career.</p>
-              <p><strong>Next Step:</strong> My next step is to complete my database and problem management projects. I will also work to make significant headway on my website creation.</p>
+              <p><strong>Challenge / Risk:</strong> No challenges or risks currently. Monitoring will continue as closure ensues.</p>
+              <p><strong>Next Step:</strong> Closure documents will be completed in the coming weeks.</p>
             </div>
           </div>
-          <p><a class="extlink" href="https://alexis-s-pinon.github.io/4860-project-charter/" target="_blank" rel="noopener noreferrer">View Charter</a></p>
+          <p><a class="extlink" href="https://alexis-s-pinon.github.io/4860-project-charter/" target="_blank"
+              rel="noopener noreferrer">View Charter</a></p>
         </article>
       </div>
 
@@ -204,6 +483,160 @@
       <details class="update" open>
         <summary>
           <div class="summary-row">
+            <strong>Meeting – 2025-11-13 • 3:25–4:00 PM • Zoom</strong>
+            <span class="spacer"></span>
+            <div class="summary-meta">
+              <span>Facilitator: Alejandro &amp; Alexis</span>
+              <span class="health">🟢 Notes</span>
+            </div>
+          </div>
+        </summary>
+        <div class="update-body">
+
+          <div class="row">
+            <div>
+              <p><strong>Attendees:</strong> Alejandro Diaz, Ryan Hwang, Alexis Pinon, Juan Talome, Jeremy Yan</p>
+              <p><strong>Agenda:</strong>
+              <ul>
+                <li>This meeting was collectively called by the group to go over individual project progress updates to
+                  update the group charter.</li>
+                <li>The Timekeeper and Notetaker is Ryan Hwang/Jeremy Yan.</li>
+                <li>Participants are expected to bring and read from: 1) their laptops; 2) individual project charters;
+                  and 3) their documented project progress.</li>
+              </ul>
+              </p>
+              <p><strong>Key Discussion:</strong></p>
+              <ul>
+                <li>I’m just wrapping up the last details on each of my milestones. Pretty much all I have left is to
+                  finish adding things to my website and then the closure document. Everything is looking good as far,
+                  my project is on track. – Alexis</li>
+                <li>Week 12 I continued the project charter, updating and working the certification on module 3, did a
+                  job search, and reached out for interviews, 1 secured. 2 more in the works. No risks or issues to
+                  report at this time, deliverables on schedule. – Juan</li>
+                <li>Progress is going well,working on studying milestone 3, should be done by the 22nd Doing practice
+                  exams to get a feel for exam materials – Jeremy</li>
+                <li>Studying the ISC2 practice exam. Going back into studying problem areas. Other deliverables working
+                  on network, 4 chapters of studying, not confident on completing by class completion. Will extend
+                  beyond the semester. Focusing on the ISC2 practice exam. No real risk reported at this time. Things
+                  have been flowing besides the ISC2 exam. – Alejandro</li>
+                <li>Got rid of a contact-unreliable. Deliverables-A+ practice exam to be taken. will reach out for peer
+                  review. General status is good, no real risk. – Ryan</li>
+              </ul>
+            </div>
+            <div>
+              <p><strong>Conclusions:</strong></p>
+              <ul>
+                <li>All working on own things and making good progress. No immediate threats, blockage, or priority
+                  incidents in the way.</li>
+                <li>Challenges and risks may include some deliverables not being completed by semester end.</li>
+                <li>Next steps include steps such as continuing to keep working and getting deliverables done on time.
+                </li>
+              </ul>
+              <p><strong>Action Items:</strong></p>
+              <ul>
+                <li>Passing certification exam 🡪 Jeremy 🡪 Deadline [11/22/2025]</li>
+                <li>Finish details of each deliverable and add the rest of the content to my website 🡪 Alexis 🡪
+                  Deadline [11/20/2025]</li>
+                <li>Registered for certification on Nov. 20th and will pass the exam -> Alejandro -> Deadline
+                  [11/20/2025]</li>
+                <li>Finish certificate and work on next goal, apply for interviews 🡪 Juan 🡪 Deadline [11/23]</li>
+                <li> Finish resource report, continue outreach with remaining one contact, get peer feedback for report
+                  🡪 Ryan 🡪 Deadline [11/21/2025 at earliest, 11/23/2025 at latest].</li>
+              </ul>
+              <p><strong>Adjournment:</strong>
+              <ul>
+                <li>Alejandro and group adjourned meeting at around 3:45 PM.</li>
+                <li>Notes Reviewed by: Team before meeting adjournment.</li>
+                <li>Notes Approved by: Team before meeting was adjourned.</li>
+              </ul>
+              </p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="update">
+        <summary>
+          <div class="summary-row">
+            <strong>Meeting – 2025-11-4 • 5:00–6:00 PM • Study Room, CSULA Annex Link</strong>
+            <span class="spacer"></span>
+            <div class="summary-meta">
+              <span>Facilitator: Alejandro &amp; Alexis</span>
+              <span class="health">🟢 Notes</span>
+            </div>
+          </div>
+        </summary>
+        <div class="update-body">
+
+          <div class="row">
+            <div>
+              <p><strong>Attendees:</strong> Alejandro Diaz, Ryan Hwang, Alexis Pinon, Juan Talome, Jeremy Yan</p>
+              <p><strong>Agenda:</strong>
+              <ul>
+                <li>This meeting was collectively called by the group to go over individual project progress updates to
+                  update the group charter.</li>
+                <li>The Timekeeper and Notetaker is Ryan Hwang.</li>
+                <li>Participants are expected to bring and read from: 1) their laptops; 2) individual project charters;
+                  and 3) their documented project progress.</li>
+              </ul>
+              </p>
+              <p><strong>Key Discussion:</strong></p>
+              <ul>
+                <li>Check in with classmates to discover current standing and progress – Alexis</li>
+                <li>Current progress is that it is going well. Completed portfolio, resume, and started working on first
+                  certificate – Google IT Professional. Green and no risks – Juan</li>
+                <li>Progress has been pretty good, finished milestone 2 in past week. Going to be issues with peer
+                  review, but that has been resolved. Progress is going well, finished milestone 3, should be done this
+                  week. Clear idea of desired certification. – Jeremy</li>
+                <li>Got greenlit, okay so far. I created portfolio, researched qualifications for jobs I will be
+                  applying for after graduation. I have established better connection with my network who work within
+                  the organization they are trying to get me into. No risks, no changes, no incidents. – Alejandro</li>
+                <li>Going well. I have completed working on Business Analysis Project and am ready to deliver a solution
+                  to business. Completed project management research. Am currently almost done with website creation and
+                  database project. No challenges or risks currently. – Alexis</li>
+                <li>Good so far. Completed professional network database, working on outreach with said network.
+                  Resource reports are well underway, and will begin overhauling professional profile, creating
+                  interview portfolio, and taking CompTIA A+ practice exam very soon. No immediate risks or issues
+                  besides possible procrastination or ineffective time management. – Ryan</li>
+              </ul>
+            </div>
+            <div>
+              <p><strong>Conclusions:</strong></p>
+              <ul>
+                <li>All working on own things and making good progress. No immediate threats, blockage, or priority
+                  incidents in the way.</li>
+                <li>Challenges and risks may include procrastination, ineffective time management.</li>
+                <li>Next steps include steps such as continuing to keep working and getting as much done as possible.
+                </li>
+              </ul>
+              <p><strong>Action Items:</strong></p>
+              <ul>
+                <li>Passing certification exam -> Jeremy -> Deadline [11/09/2025]</li>
+                <li>Complete database project and either complete or get close to completing website -> Alexis ->
+                  Deadline [11/18/2025]</li>
+                <li>Registered for certification on Nov. 20th and will pass the exam -> Alejandro -> Deadline
+                  [11/20/2025]</li>
+                <li>Finish certificate and work on next goal, updating and tailoring LinkedIn Profile towards getting
+                  entry-level IT position -> Juan -> Deadline [11/12/2025]</li>
+                <li>Finish resource report, take practice exam for CompTIA A+ practice exam, continue professional
+                  network outreach, overhaul professional LinkedIn Profile for entry-level data or enterprise systems
+                  management roles, and create website integrating it all -> Ryan -> Deadline [11/15/2025 at earliest,
+                  11/19/2025 at latest]</li>
+              </ul>
+              <p><strong>Adjournment:</strong>
+              <ul>
+                <li>Alejandro and group adjourned meeting at around 5:40 PM.</li>
+                <li>Notes Reviewed by: Team before meeting adjournment.</li>
+                <li>Notes Approved by: Team before meeting was adjourned.</li>
+              </ul>
+              </p>
+            </div>
+          </div>
+        </div>
+      </details>
+      <details class="update">
+        <summary>
+          <div class="summary-row">
             <strong>Meeting – 2025-10-27 • 7:00–8:45 PM • Salazar Hall 259</strong>
             <span class="spacer"></span>
             <div class="summary-meta">
@@ -213,25 +646,32 @@
           </div>
         </summary>
         <div class="update-body">
+
           <div class="row">
             <div>
-              <p><strong>Attendees:</strong> Alejandro Diaz, Ryan Hwang, Alexis Pinon, Juan Talome, Jeremy Yan; <em>Called by:</em> Prof. Espinoza.</p>
-              <p><strong>Agenda:</strong> Review individual project progress; group charter formatting and presentation.</p>
+              <p><strong>Attendees:</strong> Alejandro Diaz, Ryan Hwang, Alexis Pinon, Juan Talome, Jeremy Yan;
+                <em>Called by:</em> Prof. Espinoza.
+              </p>
+              <p><strong>Agenda:</strong> Review individual project progress; group charter formatting and presentation.
+              </p>
               <p><strong>Key Discussion:</strong></p>
               <ul>
                 <li>Projects center on advancing professional standing and opportunity access. (Jeremy)</li>
                 <li>Resume peer review may be difficult due to time/obligations. (Juan)</li>
                 <li>Plan in‑person sync before class next Tuesday near Salazar Hall. (Alexis)</li>
                 <li>Group portfolio site (GitHub Pages) has code/publishing UX issues; needs troubleshooting. (All)</li>
-                <li>Incorporate professor feedback into portfolio status section; reference Group 1’s showcase for inspiration. (Ryan)</li>
+                <li>Incorporate professor feedback into portfolio status section; reference Group 1’s showcase for
+                  inspiration. (Ryan)</li>
               </ul>
             </div>
             <div>
               <p><strong>Conclusions:</strong></p>
               <ul>
-                <li>Meet Tuesday, Nov 4 at 5:00 PM (Annex Link study room near Salazar Hall; overflow to benches if needed).</li>
+                <li>Meet Tuesday, Nov 4 at 5:00 PM (Annex Link study room near Salazar Hall; overflow to benches if
+                  needed).</li>
                 <li>All projects in good standing; continue toward predefined goals/benchmarks.</li>
-                <li>Analyze current <em>index.html</em> for bugs/invalid code; preserve content and consider redeploying with a fresh file.</li>
+                <li>Analyze current <em>index.html</em> for bugs/invalid code; preserve content and consider redeploying
+                  with a fresh file.</li>
               </ul>
               <p><strong>Action Items (due 11/02):</strong></p>
               <ul>
@@ -253,6 +693,75 @@
       <details class="update" open>
         <summary>
           <div class="summary-row">
+            <strong>Update – 2025-11-16</strong>
+            <span class="spacer"></span>
+            <div class="summary-meta">
+              <span>PMO</span>
+              <span class="health">🟢 Green</span>
+            </div>
+          </div>
+        </summary>
+        <div class="update-body">
+          <div class="row">
+            <div>
+              <p><strong>Summary:</strong> This week, our team has completed most of their deliverables. Most are now focused on studying for final certification exams.</p>
+            </div>
+            <div>
+              <p><strong>Highlights:</strong> The majority of deliverables have been completed!</p>
+            </div>
+            <div>
+              <p><strong>Challenges / Risks:</strong> No substantial risks at this point.</p>
+            </div>
+            <div>
+              <p><strong>Next Week Focus:</strong> The focus of next week will be to complete final steps of final deliverables and make progress on closure documentation.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="update">
+        <summary>
+          <div class="summary-row">
+            <strong>Update – 2025-11-09</strong>
+            <span class="spacer"></span>
+            <div class="summary-meta">
+              <span>PMO</span>
+              <span class="health">🟢 Green</span>
+            </div>
+          </div>
+        </summary>
+        <div class="update-body">
+          <div class="row">
+            <div>
+              <p><strong>Summary:</strong> This week, our team continued making steady progress toward our goals. We
+                advanced in certification studies, completed key project milestones, and strengthened our technical and
+                professional skills. All tasks remain on track, with no major risks or changes to scope or timeline.</p>
+            </div>
+            <div>
+              <p><strong>Highlights:</strong> This week, the team made steady progress across all certification and
+                training goals, completing major project milestones such as business analysis and website development.
+                Confidence and technical skills continue to improve through ongoing learning and exam preparation. The
+                team remains on schedule and is maintaining strong commitment to professional growth and career
+                readiness.</p>
+            </div>
+            <div>
+              <p><strong>Challenges / Risks:</strong> Overall, no major risks have been identified. Minor scheduling and
+                networking challenges have arisen, but they are being managed effectively. The team remains on track and
+                continues to monitor progress to ensure timely completion of all deliverables.</p>
+            </div>
+            <div>
+              <p><strong>Next Week Focus:</strong> The team will continue progressing through certification studies and
+                remaining deliverables. Upcoming goals include completing exams, refining professional materials, and
+                finalizing project components such as reports and websites. Focus will remain on steady progress, skill
+                development, and preparation for career advancement.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="update">
+        <summary>
+          <div class="summary-row">
             <strong>Update – 2025-11-02</strong>
             <span class="spacer"></span>
             <div class="summary-meta">
@@ -264,12 +773,27 @@
         <div class="update-body">
           <div class="row">
             <div>
-              <p><strong>Summary:</strong> Across the portfolio, all projects are progressing steadily through their execution phases. Students are advancing technical training, completing key milestones, and strengthening professional networks to enhance career readiness. Several participants have finalized or refined professional materials such as résumés and portfolios, while others are completing coursework and practical modules in networking, business analysis, and IT support. Collectively, we demonstrate consistent engagement, skill development, and forward movement toward achieving entry-level IT and information systems career goals.</p>
-              <p><strong>Highlights:</strong> Steady progress in technical training, including networking, IT Support, and data management projects. <br>Milestone completions achieved with ongoing advancement toward next project phases.</p>
+              <p><strong>Summary:</strong> Across the portfolio, all projects are progressing steadily through their
+                execution phases. Students are advancing technical training, completing key milestones, and
+                strengthening professional networks to enhance career readiness. Several participants have finalized or
+                refined professional materials such as résumés and portfolios, while others are completing coursework
+                and practical modules in networking, business analysis, and IT support. Collectively, we demonstrate
+                consistent engagement, skill development, and forward movement toward achieving entry-level IT and
+                information systems career goals.</p>
             </div>
             <div>
-              <p><strong>Challenges / Risks:</strong> None active; continue to monitor workload and external commitments.</p>
-              <p><strong>Next Week Focus:</strong> We will focus on completing project milestones, advancing work in networking, IT support, database, and web development. Most will also begin certification and continue refining professional profiles and networking outreach.</p>
+              <p><strong>Highlights:</strong> Steady progress in technical training, including networking, IT Support,
+                and data management projects. <br>Milestone completions achieved with ongoing advancement toward next
+                project phases.</p>
+            </div>
+            <div>
+              <p><strong>Challenges / Risks:</strong> None active; continue to monitor workload and external
+                commitments.</p>
+            </div>
+            <div>
+              <p><strong>Next Week Focus:</strong> We will focus on completing project milestones, advancing work in
+                networking, IT support, database, and web development. Most will also begin certification and continue
+                refining professional profiles and networking outreach.</p>
             </div>
           </div>
         </div>
@@ -292,11 +816,16 @@
               <p><strong>Summary:</strong> All projects are currently green, executing against approved charters.
                 Earlier scope issues were resolved by clarifying deliverables and success metrics. The portfolio is
                 progressing toward upcoming checkpoints with predictable timelines.</p>
-              <p><strong>Highlights:</strong> Goals and milestones confirmed; portfolio assets and résumés advancing.</p>
+            </div>
+            <div>
+              <p><strong>Highlights:</strong> Goals and milestones confirmed; portfolio assets and résumés advancing.
+              </p>
             </div>
             <div>
               <p><strong>Challenges / Risks:</strong> None active; continue to monitor workload and external
                 commitments.</p>
+            </div>
+            <div>
               <p><strong>Next Week Focus:</strong> Execute certificate coursework and publish remaining portfolio
                 content.</p>
             </div>
@@ -306,4 +835,5 @@
     </section>
   </div>
 </body>
+
 </html>
